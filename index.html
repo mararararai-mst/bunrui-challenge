@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物質の分類｜単体・化合物・混合物</title>
+<meta property="og:title" content="物質の分類｜単体・化合物・混合物">
+<meta property="og:description" content="中2理科 化学変化と原子・分子｜説明スライドとインタラクティブ分類教材">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --tan: #fff8e8;
+    --line: #4a3a2a;
+    --orange: #ff9a55;
+    --orange-bg: #ffe9d4;
+    --blue: #4ab4d6;
+    --blue-bg: #d6eef6;
+    --green: #6bbf7a;
+    --green-bg: #dff2e1;
+    --yellow: #ffd45c;
+    --gray: #707070;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Yu Gothic UI", "Hiragino Sans", "Meiryo", sans-serif;
+    background: #f0e6d0;
+    color: var(--line);
+    min-height: 100vh;
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+  header {
+    text-align: center;
+    background: var(--tan);
+    border: 3px solid var(--line);
+    border-radius: 22px;
+    padding: 28px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: "✨";
+    position: absolute;
+    top: 14px; left: 24px;
+    font-size: 26px;
+  }
+  header::after {
+    content: "🌟";
+    position: absolute;
+    bottom: 14px; right: 24px;
+    font-size: 26px;
+  }
+  h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+    letter-spacing: 0.06em;
+  }
+  h1 .acc { color: var(--orange); }
+  .sub {
+    font-size: 14px;
+    color: #555;
+    margin: 0;
+  }
+  .badge {
+    display: inline-block;
+    background: var(--line);
+    color: var(--tan);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 12px;
+  }
+
+  .lead {
+    background: white;
+    border: 2px dashed var(--line);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 22px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+  .lead b {
+    background: linear-gradient(transparent 60%, #ffe27a 60%);
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .card {
+    background: white;
+    border: 3px solid var(--line);
+    border-radius: 18px;
+    padding: 22px;
+    text-decoration: none;
+    color: inherit;
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,.15);
+  }
+  .card .num {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: var(--line);
+    color: var(--tan);
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 16px;
+  }
+  .card.c1 { background: var(--orange-bg); border-color: var(--orange); }
+  .card.c2 { background: var(--blue-bg); border-color: var(--blue); }
+
+  .card h2 {
+    margin: 0 0 8px;
+    font-size: 22px;
+    padding-right: 50px;
+  }
+  .card .for {
+    display: inline-block;
+    background: white;
+    padding: 3px 10px;
+    border-radius: 999px;
+    border: 2px solid var(--line);
+    font-size: 11px;
+    margin-bottom: 10px;
+  }
+  .card p {
+    margin: 0 0 12px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #444;
+  }
+  .features {
+    background: white;
+    border-radius: 10px;
+    padding: 8px 12px;
+    font-size: 12px;
+    color: #555;
+    line-height: 1.7;
+  }
+  .features b { color: var(--line); }
+
+  .open-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--yellow);
+    border: 2.5px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 12px;
+    transition: 0.15s;
+  }
+  .card:hover .open-btn { background: var(--line); color: var(--tan); }
+
+  /* 分子モデルの装飾 */
+  .deco {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .atom {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid var(--line);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: bold;
+  }
+  .atom.o { background: #ff7a7a; color: white; }
+  .atom.h { background: #bfe6f4; }
+  .atom.c { background: #3a3a3a; color: white; }
+  .atom.cu { background: #d4a574; }
+
+  footer {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray);
+  }
+  footer a { color: var(--gray); }
+
+  @media (max-width: 720px) {
+    .cards { grid-template-columns: 1fr; }
+    h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="badge">中2 理科｜化学変化と原子・分子</div>
+    <h1>物質の分類<span class="acc">チャレンジ</span></h1>
+    <p class="sub">単体・化合物・混合物 ／ 分子か分子でないか</p>
+  </header>
+
+  <div class="lead">
+    身のまわりの物質を <b>「混合物⇔純粋な物質」</b>「単体⇔化合物」「分子⇔分子でない」 の <b>3階層</b>で分類していこう。<br>
+    まずは説明資料で考え方をつかんでから、インタラクティブ教材でドラッグ＆ドロップで分類してみよう。
+  </div>
+
+  <div class="cards">
+    <a href="explain.html" class="card c1" target="_blank">
+      <div class="num">1</div>
+      <div class="deco">
+        <span class="atom o">O</span><span class="atom o">O</span>
+        <span style="margin: 0 6px;">／</span>
+        <span class="atom h">H</span><span class="atom o">O</span><span class="atom h">H</span>
+      </div>
+      <span class="for">授業の最初に</span>
+      <h2>説明資料</h2>
+      <p>
+        単体・化合物・混合物のちがいを、分子モデルと化学式でひと目でつかむA4横1枚のスライド。
+      </p>
+      <div class="features">
+        <b>収録内容：</b>3つの分類の定義／分子モデル例／化学式の読み解き／印刷OK
+      </div>
+      <span class="open-btn">説明資料をひらく ▶</span>
+    </a>
+
+    <a href="challenge.html" class="card c2" target="_blank">
+      <div class="num">2</div>
+      <div class="deco">
+        <span class="atom c">C</span><span class="atom o">O</span><span class="atom o">O</span>
+        <span style="margin: 0 6px;">／</span>
+        <span class="atom cu">Cu</span><span class="atom o">O</span>
+      </div>
+      <span class="for">説明のあとに</span>
+      <h2>分類チャレンジ</h2>
+      <p>
+        ドラッグ＆ドロップで物質カードを分類していくインタラクティブ教材。5ステップ＋発展問題。
+      </p>
+      <div class="features">
+        <b>STEP：</b>①混合物⇔純物質 ②単体⇔化合物 ③分子⇔分子でない ④総合クイズ ⑤発展（24問）
+      </div>
+      <span class="open-btn">教材をはじめる ▶</span>
+    </a>
+  </div>
+
+  <footer>
+    中学2年 理科｜化学変化と原子・分子｜物質の成り立ち
+  </footer>
+</div>
+</body>
+</html>
