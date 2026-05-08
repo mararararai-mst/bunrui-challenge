@@ -444,10 +444,108 @@
     z-index: 9999;
   }
 
+  /* ===== スタート画面の説明スライド ===== */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin: 18px 0 14px;
+    text-align: left;
+  }
+  .intro-card {
+    background: white;
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    padding: 12px;
+  }
+  .intro-card h3 {
+    margin: 0 0 8px;
+    text-align: center;
+    padding: 5px 8px;
+    border-radius: 8px;
+    color: white;
+    font-size: 17px;
+  }
+  .intro-card.io { border-color: var(--orange); background: var(--orange-bg); }
+  .intro-card.io h3 { background: var(--orange); }
+  .intro-card.ib { border-color: var(--blue); background: var(--blue-bg); }
+  .intro-card.ib h3 { background: var(--blue); }
+  .intro-card.ig { border-color: var(--green); background: var(--green-bg); }
+  .intro-card.ig h3 { background: var(--green); }
+  .intro-card .desc {
+    font-size: 12px;
+    color: #444;
+    text-align: center;
+    margin: 0 0 10px;
+    line-height: 1.6;
+  }
+  .intro-card .desc b { background: linear-gradient(transparent 60%, #ffe27a 60%); }
+  .ex-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
+  }
+  .ex-grid > span {
+    background: white;
+    padding: 4px 6px;
+    border-radius: 8px;
+    font-size: 11px;
+    border: 1px solid #ddd;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .ex-grid > span.full { grid-column: 1 / -1; }
+  .ex-grid b {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 1px;
+  }
+  .intro-card .pt {
+    margin-top: 8px;
+    background: var(--line);
+    color: var(--tan);
+    padding: 5px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .intro-card .pt::before { content: "★ "; color: #ffd45c; }
+  .intro-summary {
+    background: white;
+    border: 2px solid var(--line);
+    border-radius: 12px;
+    padding: 8px 14px;
+    margin: 6px 0 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 13px;
+    flex-wrap: wrap;
+  }
+  .intro-summary .chip {
+    padding: 3px 10px;
+    border-radius: 999px;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+  }
+  .intro-summary .chip.o { background: var(--orange); }
+  .intro-summary .chip.b { background: var(--blue); }
+  .intro-summary .chip.g { background: var(--green); }
+  .intro-summary .pure {
+    border: 2px dashed var(--line);
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #fff8d0;
+    font-weight: bold;
+  }
+
   @media (max-width: 720px) {
     .boxes.two   { grid-template-columns: 1fr; }
     .boxes.three { grid-template-columns: 1fr; }
     .quad { grid-template-columns: 60px 1fr 1fr; font-size: 11px; }
+    .intro-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -791,16 +889,56 @@ function renderStart() {
   state.scores = { 1: null, 2: null, 3: null, 4: null, 5: null };
   updateProgress();
   $('#stage').innerHTML = `
-    <div class="center-screen">
+    <div class="center-screen" style="padding: 20px 16px;">
       <h2>物質の分類チャレンジ</h2>
-      <p>
+      <p style="margin-bottom: 4px;">
         身のまわりの物質を、3つの観点で分類していこう。<br>
-        ① 混合物か純粋な物質か → ② 単体か化合物か → ③ 分子か分子でないか<br>
-        最後に総合クイズで力だめし！
+        ① 混合物か純粋な物質か → ② 単体か化合物か → ③ 分子か分子でないか
       </p>
-      <p style="font-size:13px; color:#666;">
-        遊び方：<b>カードをドラッグ</b>して、入れたい箱の上で離す<br>
-        箱の中のカードもドラッグで動かせます
+
+      <div class="intro-grid">
+        <div class="intro-card io">
+          <h3>単体</h3>
+          <div class="desc"><b>1種類の元素</b>からできている物質</div>
+          <div class="ex-grid">
+            <span><b>O<sub>2</sub></b>酸素</span>
+            <span><b>H<sub>2</sub></b>水素</span>
+            <span><b>Cu</b>銅</span>
+            <span><b>Mg</b>マグネシウム</span>
+          </div>
+          <div class="pt">化学式に元素記号が1種類だけ</div>
+        </div>
+        <div class="intro-card ib">
+          <h3>化合物</h3>
+          <div class="desc"><b>2種類以上の元素</b>からできている物質</div>
+          <div class="ex-grid">
+            <span><b>H<sub>2</sub>O</b>水</span>
+            <span><b>CO<sub>2</sub></b>二酸化炭素</span>
+            <span><b>NaCl</b>塩化ナトリウム</span>
+            <span><b>CuO</b>酸化銅</span>
+          </div>
+          <div class="pt">化学式に元素記号が2種類以上</div>
+        </div>
+        <div class="intro-card ig">
+          <h3>混合物</h3>
+          <div class="desc"><b>2種類以上の物質</b>が混じり合ったもの<br>1つの化学式では表せない</div>
+          <div class="ex-grid">
+            <span class="full"><b>食塩水</b>NaCl と H<sub>2</sub>O</span>
+            <span><b>空気</b>N<sub>2</sub>・O<sub>2</sub>…</span>
+            <span><b>お茶</b>水＋成分</span>
+          </div>
+          <div class="pt">「○○水溶液」「お茶」「コーラ」など</div>
+        </div>
+      </div>
+
+      <div class="intro-summary">
+        <span class="chip o">単体</span>＋<span class="chip b">化合物</span>＝
+        <span class="pure">純粋な物質</span>
+        ⇔ <span class="chip g">混合物</span>
+      </div>
+
+      <p style="font-size:13px; color:#666; margin-bottom: 10px;">
+        遊び方：<b>カードをドラッグ</b>して、入れたい箱の上で離す（箱の中のカードも動かせます）
       </p>
       <button class="primary" onclick="goStep(1)">スタート 🚀</button>
     </div>
