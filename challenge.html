@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>物質の分類チャレンジ｜単体・化合物・混合物</title>
+<meta property="og:title" content="物質の分類チャレンジ｜単体・化合物・混合物">
+<meta property="og:description" content="中2理科 化学変化と原子・分子｜物質を3階層で分類するインタラクティブ教材">
+<meta property="og:type" content="article">
+<style>
+  :root {
+    --tan: #fff8e8;
+    --line: #4a3a2a;
+    --orange: #ff9a55;
+    --orange-bg: #ffe9d4;
+    --blue: #4ab4d6;
+    --blue-bg: #d6eef6;
+    --green: #6bbf7a;
+    --green-bg: #dff2e1;
+    --pink: #f4a8bd;
+    --yellow: #ffd45c;
+    --gray: #707070;
+    --red: #e25555;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "Yu Gothic UI", "Hiragino Sans", "Meiryo", sans-serif;
+    background: #f0e6d0;
+    color: var(--line);
+    min-height: 100vh;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .app {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  header.top {
+    background: var(--tan);
+    border: 3px solid var(--line);
+    border-radius: 18px;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  header.top h1 {
+    margin: 0;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+  }
+  header.top .badge {
+    background: var(--line);
+    color: var(--tan);
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .mute-btn {
+    font-size: 18px;
+    padding: 4px 10px;
+    border: 2px solid var(--line);
+    background: white;
+    border-radius: 999px;
+    cursor: pointer;
+    line-height: 1;
+  }
+  .mute-btn.off { background: #eee; opacity: 0.6; }
+  .progress {
+    margin-top: 12px;
+    background: var(--tan);
+    border: 3px solid var(--line);
+    border-radius: 14px;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progress .step {
+    flex: 1;
+    text-align: center;
+    padding: 6px 4px;
+    border-radius: 10px;
+    background: white;
+    border: 2px solid #ddd;
+    font-size: 12px;
+    color: var(--gray);
+    font-weight: bold;
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  .progress .step.active {
+    background: var(--yellow);
+    border-color: var(--line);
+    color: var(--line);
+    transform: scale(1.05);
+  }
+  .progress .step.done {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .progress .step.done::before { content: "✔ "; }
+
+  .card-stage {
+    margin-top: 14px;
+    background: var(--tan);
+    border: 3px solid var(--line);
+    border-radius: 18px;
+    padding: 16px;
+    min-height: 540px;
+    position: relative;
+  }
+
+  .stage-title {
+    text-align: center;
+    margin: 0 0 6px;
+    font-size: 22px;
+  }
+  .stage-sub {
+    text-align: center;
+    margin: 0 0 14px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  .help {
+    background: #fffbe0;
+    border: 2px dashed var(--line);
+    border-radius: 10px;
+    padding: 6px 12px;
+    font-size: 12px;
+    text-align: center;
+    color: #555;
+    margin-bottom: 12px;
+  }
+  .help b { color: var(--line); }
+
+  /* ----- 箱（dropzone） ----- */
+  .boxes {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .boxes.two   { grid-template-columns: 1fr 1fr; }
+  .boxes.three { grid-template-columns: 1fr 1fr 1fr; }
+
+  .box {
+    background: white;
+    border: 3px dashed var(--line);
+    border-radius: 14px;
+    padding: 10px;
+    min-height: 130px;
+    transition: 0.15s;
+  }
+  .box.over {
+    background: #fff5b8;
+    border-color: var(--yellow);
+    border-style: solid;
+    transform: scale(1.02);
+  }
+  .box h3 {
+    margin: 0 0 8px;
+    text-align: center;
+    padding: 6px 0;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+  }
+  .box.b-orange h3 { background: var(--orange); }
+  .box.b-blue h3   { background: var(--blue); }
+  .box.b-green h3  { background: var(--green); }
+  .box.b-yellow h3 { background: #d4a83a; }
+  .box.b-gray h3   { background: #888; }
+
+  .box .slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    min-height: 80px;
+    align-content: flex-start;
+  }
+
+  /* ----- 物質カード ----- */
+  .pool {
+    background: rgba(255,255,255,.6);
+    border: 2px solid var(--line);
+    border-radius: 14px;
+    padding: 10px;
+    min-height: 90px;
+    transition: 0.15s;
+  }
+  .pool.over {
+    background: #fff5b8;
+    border-color: var(--yellow);
+    transform: scale(1.01);
+  }
+  .pool .pool-label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .pool .slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    min-height: 60px;
+  }
+
+  .item {
+    background: white;
+    border: 2.5px solid var(--line);
+    border-radius: 12px;
+    padding: 6px 8px 4px;
+    min-width: 88px;
+    text-align: center;
+    cursor: grab;
+    transition: 0.15s;
+    position: relative;
+    touch-action: none;
+  }
+  .item:hover { transform: translateY(-2px); }
+  .item.dragging {
+    cursor: grabbing;
+    opacity: 0.92;
+    box-shadow: 0 10px 24px rgba(0,0,0,.3);
+    transform: rotate(3deg) scale(1.05);
+    pointer-events: none;
+    z-index: 10000;
+    transition: none;
+  }
+  .item.correct {
+    border-color: var(--green);
+    background: #d8f5dc;
+    box-shadow: 0 0 0 2px var(--green);
+  }
+  .item.wrong {
+    border-color: var(--red);
+    background: #ffd9d9;
+    box-shadow: 0 0 0 2px var(--red);
+    animation: shake 0.3s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
+  .item .name {
+    font-size: 11px;
+    color: #555;
+    margin-top: 2px;
+  }
+  .item .formula {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .item .formula sub { font-size: 12px; }
+
+  /* ----- ボタン ----- */
+  .actions {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  button {
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 10px 22px;
+    border-radius: 999px;
+    border: 3px solid var(--line);
+    background: white;
+    color: var(--line);
+    cursor: pointer;
+    transition: 0.15s;
+  }
+  button:hover:not(:disabled) { transform: translateY(-2px); }
+  button.primary { background: var(--yellow); }
+  button.success {
+    background: var(--green);
+    color: white;
+    border-color: var(--green);
+    font-size: 16px;
+    padding: 12px 28px;
+  }
+  button.ghost {
+    background: transparent;
+    font-size: 12px;
+    padding: 6px 14px;
+    border-width: 2px;
+  }
+  button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* ----- 判定パネル ----- */
+  .feedback {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: white;
+    border: 2px solid var(--line);
+    font-size: 14px;
+    line-height: 1.6;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #f0fff2; border-color: var(--green); }
+  .feedback.ng { background: #ffe9e9; border-color: var(--red); }
+
+  /* ----- スタート / 結果 ----- */
+  .center-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .center-screen h2 {
+    font-size: 30px;
+    margin: 0 0 16px;
+  }
+  .center-screen p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin: 0 0 16px;
+  }
+  .score-display {
+    font-size: 60px;
+    font-weight: bold;
+    color: var(--orange);
+    margin: 16px 0;
+  }
+  .score-display small { font-size: 24px; color: var(--line); }
+
+  /* ----- STEP4 クイズ ----- */
+  .quiz {
+    text-align: center;
+  }
+  .quiz .qnum {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+  }
+  .quiz .item-big {
+    display: inline-block;
+    background: white;
+    border: 3px solid var(--line);
+    border-radius: 16px;
+    padding: 18px 26px;
+    margin: 10px 0;
+  }
+  .quiz .item-big .formula {
+    font-size: 36px;
+    font-weight: bold;
+  }
+  .quiz .item-big .formula sub { font-size: 24px; }
+  .quiz .item-big .name {
+    font-size: 13px;
+    color: #555;
+    margin-top: 4px;
+  }
+  .quiz .choices {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+  }
+  .quiz .choice {
+    font-size: 15px;
+    padding: 12px 26px;
+    border-radius: 14px;
+    border: 3px solid var(--line);
+    background: white;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 130px;
+    transition: 0.15s;
+  }
+  .quiz .choice:hover:not(:disabled) { transform: translateY(-2px); }
+  .quiz .choice.c1 { background: var(--orange-bg); }
+  .quiz .choice.c2 { background: var(--blue-bg); }
+  .quiz .choice.c3 { background: var(--green-bg); }
+  .quiz .choice.correct { background: var(--green); color: white; border-color: var(--green); }
+  .quiz .choice.wrong { background: var(--red); color: white; border-color: var(--red); }
+  .quiz .choice:disabled { cursor: not-allowed; transform: none; }
+
+  /* ----- 4象限テーブル STEP3後の表示 ----- */
+  .quad {
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr;
+    gap: 4px;
+    background: white;
+    padding: 8px;
+    border-radius: 12px;
+    border: 2px solid var(--line);
+    font-size: 12px;
+  }
+  .quad .head {
+    background: var(--line);
+    color: var(--tan);
+    text-align: center;
+    padding: 4px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  .quad .label {
+    background: #f5e9c8;
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 6px;
+    font-weight: bold;
+  }
+  .quad .cell {
+    background: #fafafa;
+    border-radius: 6px;
+    padding: 6px;
+    min-height: 52px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    align-content: center;
+    justify-content: center;
+  }
+
+  /* キラキラ */
+  @keyframes sparkle {
+    0% { opacity: 0; transform: scale(0.5) rotate(0deg); }
+    50% { opacity: 1; transform: scale(1.2) rotate(180deg); }
+    100% { opacity: 0; transform: scale(0.5) rotate(360deg); }
+  }
+  .sparkle {
+    position: fixed;
+    pointer-events: none;
+    font-size: 22px;
+    animation: sparkle 0.8s ease-out forwards;
+    z-index: 9999;
+  }
+
+  @media (max-width: 720px) {
+    .boxes.two   { grid-template-columns: 1fr; }
+    .boxes.three { grid-template-columns: 1fr; }
+    .quad { grid-template-columns: 60px 1fr 1fr; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>物質の分類チャレンジ</h1>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="mute-btn" id="muteBtn" onclick="toggleSound()" title="音のON / OFF">🔊</button>
+      <span class="badge">中2 理科｜化学変化と原子・分子</span>
+    </div>
+  </header>
+
+  <div class="progress" id="progress">
+    <div class="step" data-step="0">スタート</div>
+    <div class="step" data-step="1">①混合物か純物質か</div>
+    <div class="step" data-step="2">②単体か化合物か</div>
+    <div class="step" data-step="3">③分子か分子でないか</div>
+    <div class="step" data-step="4">④総合クイズ</div>
+    <div class="step" data-step="5">⑤発展問題</div>
+  </div>
+
+  <div class="card-stage" id="stage"></div>
+</div>
+
+<script>
+/* =========================================================
+   物質データ
+   ========================================================= */
+const SUBSTANCES = {
+  O2:    { formula: 'O<sub>2</sub>',  name: '酸素',         pure: true,  type: '単体',   molecule: true  },
+  H2:    { formula: 'H<sub>2</sub>',  name: '水素',         pure: true,  type: '単体',   molecule: true  },
+  Cu:    { formula: 'Cu',             name: '銅',           pure: true,  type: '単体',   molecule: false },
+  Mg:    { formula: 'Mg',             name: 'マグネシウム', pure: true,  type: '単体',   molecule: false },
+  Fe:    { formula: 'Fe',             name: '鉄',           pure: true,  type: '単体',   molecule: false },
+  H2O:   { formula: 'H<sub>2</sub>O', name: '水',           pure: true,  type: '化合物', molecule: true  },
+  CO2:   { formula: 'CO<sub>2</sub>', name: '二酸化炭素',   pure: true,  type: '化合物', molecule: true  },
+  NaCl:  { formula: 'NaCl',           name: '塩化ナトリウム', pure: true, type: '化合物', molecule: false },
+  CuO:   { formula: 'CuO',            name: '酸化銅',       pure: true,  type: '化合物', molecule: false },
+  Saltwater: { formula: '食塩水',      name: 'NaCl + H₂O',     pure: false, type: '混合物' },
+  Air:       { formula: '空気',        name: 'N₂・O₂・…',      pure: false, type: '混合物' },
+  Tea:       { formula: 'お茶',        name: '水＋茶の成分',   pure: false, type: '混合物' },
+  Seawater:  { formula: '海水',        name: '水＋塩など',     pure: false, type: '混合物' },
+
+  /* ⑤発展問題用 */
+  Ag:        { formula: 'Ag',          name: '銀',             pure: true,  type: '単体' },
+  C:         { formula: 'C',           name: '炭素',           pure: true,  type: '単体' },
+  N2:        { formula: 'N<sub>2</sub>', name: '窒素',         pure: true,  type: '単体' },
+  Zn:        { formula: 'Zn',          name: '亜鉛',           pure: true,  type: '単体' },
+  Au:        { formula: 'Au',          name: '金',             pure: true,  type: '単体' },
+  NH4_2SO4:  { formula: '(NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub>', name: '硫酸アンモニウム', pure: true, type: '化合物' },
+  C6H12O6:   { formula: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>',   name: 'でんぷん',         pure: true, type: '化合物' },
+  C2H5OH:    { formula: 'C<sub>2</sub>H<sub>5</sub>OH', name: 'エタノール',     pure: true,  type: '化合物' },
+  Ag2O:      { formula: 'Ag<sub>2</sub>O', name: '酸化銀',     pure: true,  type: '化合物' },
+  NH3:       { formula: 'NH<sub>3</sub>',  name: 'アンモニア', pure: true,  type: '化合物' },
+  CuS:       { formula: 'CuS',         name: '硫化銅',         pure: true,  type: '化合物' },
+  CH3COOH:   { formula: 'CH<sub>3</sub>COOH', name: '酢酸',    pure: true,  type: '化合物' },
+  Cola:      { formula: 'コーラ',      name: '糖・水・…',      pure: false, type: '混合物' },
+  NaClAq:    { formula: '塩化ナトリウム水溶液', name: 'NaCl + H₂O', pure: false, type: '混合物' },
+  CuCl2Aq:   { formula: '塩化銅水溶液', name: 'CuCl₂ + H₂O',   pure: false, type: '混合物' },
+};
+
+/* =========================================================
+   状態
+   ========================================================= */
+const state = {
+  step: 0,
+  scores: { 1: null, 2: null, 3: null, 4: null, 5: null },
+  step1Items: ['O2','H2O','Saltwater','CO2','Air','Tea'],     // 純3 / 混3
+  step2Items: ['O2','H2O','Cu','CO2','NaCl','H2','CuO','Mg'],
+  step3Items: ['O2','H2','H2O','CO2','Cu','Mg','NaCl','CuO'],
+  step4Pool:  ['O2','H2','Cu','Mg','Fe','H2O','CO2','NaCl','CuO','Saltwater','Air','Tea','Seawater'],
+  step5Items: [
+    'H2','Ag','NH4_2SO4','C','H2O','NaCl',
+    'C6H12O6','N2','Zn','C2H5OH','Mg','Cu',
+    'Ag2O','NaClAq','Air','Au','NH3','CuS',
+    'CH3COOH','Cola','CuCl2Aq','CO2','O2','Fe'
+  ],
+};
+
+/* =========================================================
+   ユーティリティ
+   ========================================================= */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function makeItem(key) {
+  const s = SUBSTANCES[key];
+  const div = document.createElement('div');
+  div.className = 'item';
+  div.dataset.key = key;
+  div.innerHTML = `<div class="formula">${s.formula}</div><div class="name">${s.name}</div>`;
+  attachDrag(div);
+  return div;
+}
+
+function sparkle(x, y) {
+  const marks = ['✨','⭐','🌟','💫'];
+  for (let i = 0; i < 5; i++) {
+    const el = document.createElement('div');
+    el.className = 'sparkle';
+    el.textContent = marks[Math.floor(Math.random() * marks.length)];
+    el.style.left = (x + (Math.random() - 0.5) * 80) + 'px';
+    el.style.top  = (y + (Math.random() - 0.5) * 80) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 900);
+  }
+}
+
+function updateProgress() {
+  $$('#progress .step').forEach(el => {
+    const s = +el.dataset.step;
+    el.classList.toggle('active', s === state.step);
+    el.classList.toggle('done', s < state.step && s !== 0);
+  });
+}
+
+/* =========================================================
+   音（Web Audio API）
+   ========================================================= */
+let audioCtx = null;
+let soundOn = true;
+
+function getAudio() {
+  if (!audioCtx) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) { return null; }
+  }
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playCorrect() {
+  if (!soundOn) return;
+  const ctx = getAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // ド・ミ・ソ の上昇アルペジオ
+  [523.25, 659.25, 783.99].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = freq;
+    osc.type = 'sine';
+    const t = now + i * 0.08;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.18, t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.34);
+  });
+}
+
+function playWrong() {
+  if (!soundOn) return;
+  const ctx = getAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // ブッブッ（低めのsquare 2発）
+  [0, 0.18].forEach((delay) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.frequency.value = 180;
+    osc.type = 'square';
+    const t = now + delay;
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.13);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.15);
+  });
+}
+
+function playPick() {
+  if (!soundOn) return;
+  const ctx = getAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // ピッ（高めの短い音）
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = 880;
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.07, now + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.1);
+}
+
+function playDrop() {
+  if (!soundOn) return;
+  const ctx = getAudio();
+  if (!ctx) return;
+  const now = ctx.currentTime;
+  // コトッ（落ちる感じ、440 → 330 へ下降）
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.setValueAtTime(440, now);
+  osc.frequency.exponentialRampToValueAtTime(300, now + 0.08);
+  osc.type = 'sine';
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(0.09, now + 0.005);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.14);
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  const btn = document.getElementById('muteBtn');
+  if (btn) {
+    btn.textContent = soundOn ? '🔊' : '🔇';
+    btn.classList.toggle('off', !soundOn);
+  }
+  if (soundOn) playCorrect(); // ON時に確認音
+}
+
+/* =========================================================
+   ドラッグ&ドロップ（Pointer Events）
+   ========================================================= */
+function attachDrag(item) {
+  item.addEventListener('pointerdown', (e) => {
+    if (e.button !== undefined && e.button !== 0) return; // 左クリックのみ
+    e.preventDefault();
+
+    const pointerId = e.pointerId;
+    const rect = item.getBoundingClientRect();
+    const startX = e.clientX;
+    const startY = e.clientY;
+    const offsetX = startX - rect.left;
+    const offsetY = startY - rect.top;
+    const origParent = item.parentNode;
+    const origNext = item.nextSibling;
+
+    let dragging = false;
+    let lastTarget = null;
+
+    const startDrag = () => {
+      dragging = true;
+      playPick();
+      // 採点クラスを外す（動かしたら結果はリセット）
+      item.classList.remove('correct', 'wrong');
+      item.classList.add('dragging');
+      // body 直下に置いてfixedで動かす
+      item.style.position = 'fixed';
+      item.style.width = rect.width + 'px';
+      item.style.left = (startX - offsetX) + 'px';
+      item.style.top  = (startY - offsetY) + 'px';
+      document.body.appendChild(item);
+    };
+
+    const onMove = (ev) => {
+      if (ev.pointerId !== pointerId) return;
+      const dx = ev.clientX - startX;
+      const dy = ev.clientY - startY;
+      if (!dragging) {
+        if (Math.abs(dx) + Math.abs(dy) > 4) {
+          startDrag();
+        } else {
+          return;
+        }
+      }
+      item.style.left = (ev.clientX - offsetX) + 'px';
+      item.style.top  = (ev.clientY - offsetY) + 'px';
+
+      const below = document.elementFromPoint(ev.clientX, ev.clientY);
+      const target = below ? below.closest('.box, .pool') : null;
+      if (target !== lastTarget) {
+        $$('.box.over, .pool.over').forEach(el => el.classList.remove('over'));
+        if (target) target.classList.add('over');
+        lastTarget = target;
+      }
+    };
+
+    const cleanup = () => {
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('pointercancel', onUp);
+    };
+
+    const onUp = (ev) => {
+      if (ev.pointerId !== pointerId) return;
+      cleanup();
+      if (!dragging) return; // クリックだけ → 何もしない（元の位置のまま）
+
+      const below = document.elementFromPoint(ev.clientX, ev.clientY);
+      const target = below ? below.closest('.box, .pool') : null;
+
+      // 浮かせていたスタイルをリセット
+      item.style.position = '';
+      item.style.left = '';
+      item.style.top = '';
+      item.style.width = '';
+      item.classList.remove('dragging');
+
+      if (target) {
+        target.querySelector('.slots').appendChild(item);
+        playDrop();
+      } else {
+        // 元の位置に戻す
+        if (origNext && origNext.parentNode === origParent) {
+          origParent.insertBefore(item, origNext);
+        } else {
+          origParent.appendChild(item);
+        }
+      }
+      $$('.box.over, .pool.over').forEach(el => el.classList.remove('over'));
+
+      // 触ったらフィードバック・結果ボタンはクリア
+      const fb = $('#stage .feedback');
+      if (fb && fb.classList.contains('show')) {
+        // 不正解フィードバック中の操作は維持。正解済みは触らせない流れ
+      }
+    };
+
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerup', onUp);
+    document.addEventListener('pointercancel', onUp);
+  });
+}
+
+/* =========================================================
+   STEP 0: スタート
+   ========================================================= */
+function renderStart() {
+  state.step = 0;
+  state.scores = { 1: null, 2: null, 3: null, 4: null, 5: null };
+  updateProgress();
+  $('#stage').innerHTML = `
+    <div class="center-screen">
+      <h2>物質の分類チャレンジ</h2>
+      <p>
+        身のまわりの物質を、3つの観点で分類していこう。<br>
+        ① 混合物か純粋な物質か → ② 単体か化合物か → ③ 分子か分子でないか<br>
+        最後に総合クイズで力だめし！
+      </p>
+      <p style="font-size:13px; color:#666;">
+        遊び方：<b>カードをドラッグ</b>して、入れたい箱の上で離す<br>
+        箱の中のカードもドラッグで動かせます
+      </p>
+      <button class="primary" onclick="goStep(1)">スタート 🚀</button>
+    </div>
+  `;
+}
+
+/* =========================================================
+   分類ステップ共通
+   ========================================================= */
+function resetAll() {
+  const stage = $('#stage');
+  const pool = stage.querySelector('.pool .slots');
+  if (!pool) return;
+  $$('.box .slots .item, .pool .slots .item', stage).forEach(it => {
+    it.classList.remove('correct', 'wrong');
+    pool.appendChild(it);
+  });
+  const fb = stage.querySelector('.feedback');
+  if (fb) fb.classList.remove('show', 'ok', 'ng');
+  // 答え合わせボタン状態に戻す
+  rebuildActions(state.step);
+}
+
+function rebuildActions(stepNum) {
+  const actions = $('#stage .actions');
+  if (!actions) return;
+  const checkFn = `checkStep${stepNum}()`;
+  actions.innerHTML = `
+    <button class="primary" onclick="${checkFn}">答え合わせ</button>
+    <button class="ghost" onclick="resetAll()">全部やり直す</button>
+  `;
+}
+
+function returnWrong(poolId) {
+  const pool = $('#' + poolId);
+  if (!pool) return;
+  $$('.item.wrong').forEach(it => {
+    it.classList.remove('wrong', 'correct');
+    pool.appendChild(it);
+  });
+  $$('.item.correct').forEach(it => it.classList.remove('correct'));
+  const fb = $('#stage .feedback');
+  fb.classList.remove('show', 'ok', 'ng');
+  rebuildActions(state.step);
+}
+
+function allPlaced(poolId) {
+  return $('#' + poolId).children.length === 0;
+}
+
+/* =========================================================
+   STEP 1: 混合物 vs 純粋な物質
+   ========================================================= */
+function renderStep1() {
+  state.step = 1;
+  updateProgress();
+  $('#stage').innerHTML = `
+    <h2 class="stage-title">①混合物？それとも純粋な物質？</h2>
+    <p class="stage-sub">それぞれの物質をドラッグして、当てはまる箱に入れよう</p>
+    <div class="help">
+      カードを<b>つかんで</b>箱の上で離す。箱の中のカードも<b>ドラッグで動かせる</b>よ
+    </div>
+    <div class="boxes two">
+      <div class="box b-yellow" data-correct="pure">
+        <h3>純粋な物質（純物質）</h3>
+        <div class="slots"></div>
+      </div>
+      <div class="box b-green" data-correct="mix">
+        <h3>混合物</h3>
+        <div class="slots"></div>
+      </div>
+    </div>
+    <div class="pool">
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="slots" id="pool1"></div>
+    </div>
+    <div class="actions"></div>
+    <div class="feedback"></div>
+  `;
+  const pool = $('#pool1');
+  shuffle(state.step1Items).forEach(k => pool.appendChild(makeItem(k)));
+  rebuildActions(1);
+}
+
+function checkStep1() {
+  if (!allPlaced('pool1')) {
+    showFb('まだ箱に入っていない物質があるよ', false);
+    playWrong();
+    return;
+  }
+  let correct = 0, total = 0;
+  $$('#stage .box').forEach(box => {
+    const expect = box.dataset.correct;
+    $$('.item', box).forEach(it => {
+      total++;
+      const s = SUBSTANCES[it.dataset.key];
+      const isCorrect = (expect === 'pure' && s.pure) || (expect === 'mix' && !s.pure);
+      it.classList.toggle('correct', isCorrect);
+      it.classList.toggle('wrong', !isCorrect);
+      if (isCorrect) correct++;
+    });
+  });
+  state.scores[1] = { correct, total };
+  if (correct === total) {
+    showFb(
+      `🎉 全問正解！<br>
+       <b>純粋な物質</b>＝1つの化学式で表せる物質。<br>
+       <b>混合物</b>＝2種類以上の物質が混じり合って、1つの化学式で表せないもの。`, true);
+    sparkle(window.innerWidth/2, 200);
+    showNextBtn(() => goStep(2), '② 単体か化合物か へ進む');
+  } else {
+    showFb(
+      `${correct} / ${total} 問正解。<br>
+       <b style="color:var(--red);">赤いカード</b>はまちがい。「まちがいだけ戻す」で入れ直そう！`, false);
+    showRetryBtns('pool1');
+  }
+}
+
+/* =========================================================
+   STEP 2: 単体 vs 化合物
+   ========================================================= */
+function renderStep2() {
+  state.step = 2;
+  updateProgress();
+  $('#stage').innerHTML = `
+    <h2 class="stage-title">②単体？それとも化合物？</h2>
+    <p class="stage-sub">純粋な物質を、化学式に出てくる元素の種類で分けよう</p>
+    <div class="help">
+      <b>元素記号が1種類</b>だけなら単体、<b>2種類以上</b>なら化合物。化学式をよく見て！
+    </div>
+    <div class="boxes two">
+      <div class="box b-orange" data-correct="単体">
+        <h3>単体（1種類の元素）</h3>
+        <div class="slots"></div>
+      </div>
+      <div class="box b-blue" data-correct="化合物">
+        <h3>化合物（2種類以上の元素）</h3>
+        <div class="slots"></div>
+      </div>
+    </div>
+    <div class="pool">
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="slots" id="pool2"></div>
+    </div>
+    <div class="actions"></div>
+    <div class="feedback"></div>
+  `;
+  const pool = $('#pool2');
+  shuffle(state.step2Items).forEach(k => pool.appendChild(makeItem(k)));
+  rebuildActions(2);
+}
+
+function checkStep2() {
+  if (!allPlaced('pool2')) {
+    showFb('まだ箱に入っていない物質があるよ', false);
+    playWrong();
+    return;
+  }
+  let correct = 0, total = 0;
+  $$('#stage .box').forEach(box => {
+    const expect = box.dataset.correct;
+    $$('.item', box).forEach(it => {
+      total++;
+      const s = SUBSTANCES[it.dataset.key];
+      const isCorrect = s.type === expect;
+      it.classList.toggle('correct', isCorrect);
+      it.classList.toggle('wrong', !isCorrect);
+      if (isCorrect) correct++;
+    });
+  });
+  state.scores[2] = { correct, total };
+  if (correct === total) {
+    showFb(
+      `🎉 全問正解！<br>
+       元素記号が<b>1種類だけ</b>出てくる → 単体（O<sub>2</sub>, H<sub>2</sub>, Cu, Mg）<br>
+       元素記号が<b>2種類以上</b>出てくる → 化合物（H<sub>2</sub>O, CO<sub>2</sub>, NaCl, CuO）`, true);
+    sparkle(window.innerWidth/2, 200);
+    showNextBtn(() => goStep(3), '③ 分子か分子でないか へ進む');
+  } else {
+    showFb(
+      `${correct} / ${total} 問正解。<br>
+       元素記号の<b>種類数</b>を数えてみよう（O<sub>2</sub>はOが1種類、H<sub>2</sub>OはHとOで2種類）。`, false);
+    showRetryBtns('pool2');
+  }
+}
+
+/* =========================================================
+   STEP 3: 分子 vs 分子でない
+   ========================================================= */
+function renderStep3() {
+  state.step = 3;
+  updateProgress();
+  $('#stage').innerHTML = `
+    <h2 class="stage-title">③分子？それとも分子でない？</h2>
+    <p class="stage-sub">単体・化合物の中でも、分子のものと分子でないものがある</p>
+    <div class="help">
+      <b>金属</b>（Cu・Mg・Feなど）と、<b>NaCl・CuO</b>は分子ではない（原子が切れ目なく並んでいる）
+    </div>
+    <div class="boxes two">
+      <div class="box b-yellow" data-correct="mol">
+        <h3>分子である</h3>
+        <div class="slots"></div>
+      </div>
+      <div class="box b-gray" data-correct="nomol">
+        <h3>分子ではない</h3>
+        <div class="slots"></div>
+      </div>
+    </div>
+    <div class="pool">
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="slots" id="pool3"></div>
+    </div>
+    <div class="actions"></div>
+    <div class="feedback"></div>
+  `;
+  const pool = $('#pool3');
+  shuffle(state.step3Items).forEach(k => pool.appendChild(makeItem(k)));
+  rebuildActions(3);
+}
+
+function checkStep3() {
+  if (!allPlaced('pool3')) {
+    showFb('まだ箱に入っていない物質があるよ', false);
+    playWrong();
+    return;
+  }
+  let correct = 0, total = 0;
+  $$('#stage .box').forEach(box => {
+    const expect = box.dataset.correct;
+    $$('.item', box).forEach(it => {
+      total++;
+      const s = SUBSTANCES[it.dataset.key];
+      const isCorrect = (expect === 'mol' && s.molecule) || (expect === 'nomol' && !s.molecule);
+      it.classList.toggle('correct', isCorrect);
+      it.classList.toggle('wrong', !isCorrect);
+      if (isCorrect) correct++;
+    });
+  });
+  state.scores[3] = { correct, total };
+  if (correct === total) {
+    showFb(
+      `🎉 全問正解！<br>
+       単体でも化合物でも、分子のもの（O<sub>2</sub>, H<sub>2</sub>, H<sub>2</sub>O, CO<sub>2</sub>）と
+       分子でないもの（金属の Cu・Mg・Fe、化合物の NaCl・CuO）がある。<br>
+       <b>分子か分子でないかは、化学式からは判断できない</b>ことに注意！`, true);
+    showQuad();
+    sparkle(window.innerWidth/2, 200);
+    showNextBtn(() => goStep(4), '④ 総合クイズ へ進む');
+  } else {
+    showFb(
+      `${correct} / ${total} 問正解。<br>
+       金属（Cu・Mg・Fe）と、NaCl・CuO は<b>分子ではない</b>よ。`, false);
+    showRetryBtns('pool3');
+  }
+}
+
+function showQuad() {
+  const quad = document.createElement('div');
+  quad.className = 'quad';
+  quad.innerHTML = `
+    <div></div>
+    <div class="head">単体</div>
+    <div class="head">化合物</div>
+    <div class="label">分子</div>
+    <div class="cell">O<sub>2</sub>　H<sub>2</sub></div>
+    <div class="cell">H<sub>2</sub>O　CO<sub>2</sub></div>
+    <div class="label">分子<br>でない</div>
+    <div class="cell">Cu　Mg　Fe</div>
+    <div class="cell">NaCl　CuO</div>
+  `;
+  $('#stage .feedback').appendChild(quad);
+}
+
+/* =========================================================
+   STEP 4: 総合クイズ
+   ========================================================= */
+function renderStep4() {
+  state.step = 4;
+  updateProgress();
+  state.quiz = {
+    items: shuffle(state.step4Pool).slice(0, 10),
+    idx: 0,
+    correct: 0,
+    history: [],
+  };
+  renderQuizQ();
+}
+
+function renderQuizQ() {
+  const q = state.quiz;
+  if (q.idx >= q.items.length) {
+    renderResult();
+    return;
+  }
+  const key = q.items[q.idx];
+  const s = SUBSTANCES[key];
+  $('#stage').innerHTML = `
+    <h2 class="stage-title">④総合クイズ</h2>
+    <div class="quiz">
+      <div class="qnum">第 ${q.idx + 1} 問 / ${q.items.length} 問　・　正解 ${q.correct} 問</div>
+      <div class="item-big">
+        <div class="formula">${s.formula}</div>
+        <div class="name">${s.name}</div>
+      </div>
+      <p style="margin-top:8px; font-size:14px;">この物質はどれ？</p>
+      <div class="choices">
+        <button class="choice c1" data-ans="単体">単体</button>
+        <button class="choice c2" data-ans="化合物">化合物</button>
+        <button class="choice c3" data-ans="混合物">混合物</button>
+      </div>
+    </div>
+    <div class="feedback"></div>
+    <div class="actions" id="qActions" style="display:none;">
+      <button class="success" onclick="nextQuiz()">次の問題へ ▶</button>
+    </div>
+  `;
+  $$('.choice').forEach(b => {
+    b.onclick = (e) => {
+      const ans = b.dataset.ans;
+      const correct = s.type === ans;
+      $$('.choice').forEach(c => c.disabled = true);
+      b.classList.add(correct ? 'correct' : 'wrong');
+      if (!correct) {
+        $$('.choice').forEach(c => {
+          if (c.dataset.ans === s.type) c.classList.add('correct');
+        });
+      }
+      if (correct) {
+        q.correct++;
+        sparkle(e.clientX, e.clientY);
+        playCorrect();
+      } else {
+        playWrong();
+      }
+      q.history.push({ key, ans, correct });
+      const ex = explain(s);
+      const fb = $('#stage .feedback');
+      fb.classList.add('show', correct ? 'ok' : 'ng');
+      fb.innerHTML = correct
+        ? `✅ 正解！${ex}`
+        : `❌ 正解は <b>${s.type}</b>。${ex}`;
+      $('#qActions').style.display = 'flex';
+    };
+  });
+}
+
+function nextQuiz() {
+  state.quiz.idx++;
+  renderQuizQ();
+}
+
+function explain(s) {
+  if (s.type === '混合物') return '2種類以上の物質が混じり合っている → 混合物。化学式で表せない。';
+  if (s.type === '単体') return '元素記号が1種類しか出てこない → 単体。';
+  return '元素記号が2種類以上出てくる → 化合物。';
+}
+
+/* =========================================================
+   STEP 5: 発展問題（24物質を3分類）
+   ========================================================= */
+function renderStep5() {
+  state.step = 5;
+  updateProgress();
+  $('#stage').innerHTML = `
+    <h2 class="stage-title">⑤発展問題：これまでの全部を分類しよう</h2>
+    <p class="stage-sub">24種類の物質を、単体・化合物・混合物のどれかに振り分けよう</p>
+    <div class="help">
+      ヒント：化学式で表せないもの（「水溶液」「コーラ」「空気」など）が<b>混合物</b>。
+      化学式は<b>元素の種類数</b>で単体／化合物を見分けよう
+    </div>
+    <div class="boxes three">
+      <div class="box b-orange" data-correct="単体">
+        <h3>単体</h3>
+        <div class="slots"></div>
+      </div>
+      <div class="box b-blue" data-correct="化合物">
+        <h3>化合物</h3>
+        <div class="slots"></div>
+      </div>
+      <div class="box b-green" data-correct="混合物">
+        <h3>混合物</h3>
+        <div class="slots"></div>
+      </div>
+    </div>
+    <div class="pool">
+      <div class="pool-label">▼ 24種類の物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="slots" id="pool5"></div>
+    </div>
+    <div class="actions"></div>
+    <div class="feedback"></div>
+  `;
+  const pool = $('#pool5');
+  shuffle(state.step5Items).forEach(k => pool.appendChild(makeItem(k)));
+  rebuildActions(5);
+}
+
+function checkStep5() {
+  if (!allPlaced('pool5')) {
+    showFb('まだ箱に入っていない物質があるよ', false);
+    playWrong();
+    return;
+  }
+  let correct = 0, total = 0;
+  $$('#stage .box').forEach(box => {
+    const expect = box.dataset.correct;
+    $$('.item', box).forEach(it => {
+      total++;
+      const s = SUBSTANCES[it.dataset.key];
+      const isCorrect = s.type === expect;
+      it.classList.toggle('correct', isCorrect);
+      it.classList.toggle('wrong', !isCorrect);
+      if (isCorrect) correct++;
+    });
+  });
+  state.scores[5] = { correct, total };
+  if (correct === total) {
+    showFb(
+      `🏆 パーフェクト！分類マスター認定！<br>
+       3階層の分類がしっかり身についているね。
+       「水溶液」「コーラ」「空気」など、化学式で書かれていないものが混合物だったよ。`, true);
+    sparkle(window.innerWidth/2, 200);
+    setTimeout(() => sparkle(window.innerWidth/2, 250), 300);
+    setTimeout(() => sparkle(window.innerWidth/2, 200), 600);
+    showFinalBtns();
+  } else {
+    showFb(
+      `${correct} / ${total} 問正解。<br>
+       <b style="color:var(--red);">赤いカード</b>を見直そう。
+       「〜水溶液」「コーラ」「空気」のように化学式で表せないものは<b>混合物</b>だよ。`, false);
+    showRetryBtns('pool5');
+  }
+}
+
+function showFinalBtns() {
+  playCorrect();
+  const actions = $('#stage .actions');
+  actions.innerHTML = `
+    <button class="success" onclick="goStep(0)">最初から</button>
+    <button class="ghost" onclick="goStep(4)">クイズに戻る</button>
+  `;
+}
+
+/* =========================================================
+   結果
+   ========================================================= */
+function renderResult() {
+  state.step = 4;
+  updateProgress();
+  const q = state.quiz;
+  const total = q.items.length;
+  const pct = Math.round(q.correct / total * 100);
+  let comment = '';
+  if (pct === 100) comment = 'パーフェクト！分類マスターだね 🏆';
+  else if (pct >= 80) comment = 'すばらしい！ほぼ完ぺき 👏';
+  else if (pct >= 60) comment = 'いい感じ！もう一歩でマスター 💪';
+  else comment = '教科書を見ながらもう一度やってみよう 📖';
+  $('#stage').innerHTML = `
+    <div class="center-screen">
+      <h2>けっか発表！</h2>
+      <div class="score-display">${q.correct}<small> / ${total}</small></div>
+      <p>${comment}</p>
+      <div style="margin-top:12px; font-size:13px; color:#666;">
+        STEP1: ${state.scores[1] ? state.scores[1].correct + '/' + state.scores[1].total : '-'}
+        STEP2: ${state.scores[2] ? state.scores[2].correct + '/' + state.scores[2].total : '-'}
+        STEP3: ${state.scores[3] ? state.scores[3].correct + '/' + state.scores[3].total : '-'}
+      </div>
+      <div style="margin-top:18px;">
+        <button class="success" onclick="goStep(5)">⑤ 発展問題に挑戦 ▶</button>
+      </div>
+      <div style="margin-top:10px;">
+        <button class="primary" onclick="goStep(4)">クイズだけもう一回</button>
+        <button class="ghost" onclick="goStep(0)">最初から</button>
+      </div>
+    </div>
+  `;
+  if (pct === 100) {
+    setTimeout(() => sparkle(window.innerWidth/2, 200), 100);
+    setTimeout(() => sparkle(window.innerWidth/2, 250), 400);
+    setTimeout(() => sparkle(window.innerWidth/2, 200), 700);
+  }
+}
+
+/* =========================================================
+   フィードバック表示・進行ボタン
+   ========================================================= */
+function showFb(html, ok) {
+  const fb = $('#stage .feedback');
+  fb.classList.add('show');
+  fb.classList.toggle('ok', ok);
+  fb.classList.toggle('ng', !ok);
+  fb.innerHTML = html;
+}
+
+function showNextBtn(callback, label) {
+  playCorrect();
+  const actions = $('#stage .actions');
+  actions.innerHTML = `
+    <button class="success" id="nextBtn">${label} ▶</button>
+    <button class="ghost" onclick="resetAll()">最初からやり直す</button>
+  `;
+  $('#nextBtn').onclick = callback;
+}
+
+function showRetryBtns(poolId) {
+  playWrong();
+  const actions = $('#stage .actions');
+  const checkFn = `checkStep${state.step}()`;
+  actions.innerHTML = `
+    <button class="primary" onclick="returnWrong('${poolId}')">まちがいだけ戻す</button>
+    <button class="primary" onclick="${checkFn}">もう一度 答え合わせ</button>
+    <button class="ghost" onclick="resetAll()">全部やり直す</button>
+  `;
+}
+
+function goStep(n) {
+  if (n === 0) renderStart();
+  else if (n === 1) renderStep1();
+  else if (n === 2) renderStep2();
+  else if (n === 3) renderStep3();
+  else if (n === 4) renderStep4();
+  else if (n === 5) renderStep5();
+}
+
+// 進捗バーから直接ジャンプ
+$$('#progress .step').forEach(el => {
+  el.addEventListener('click', () => {
+    const s = +el.dataset.step;
+    goStep(s);
+  });
+});
+
+renderStart();
+</script>
+</body>
+</html>
