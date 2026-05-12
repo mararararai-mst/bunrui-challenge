@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>物質の分類｜単体・化合物・混合物 / Classification of Substances</title>
-<meta property="og:title" content="物質の分類｜単体・化合物・混合物 / Classification of Substances">
-<meta property="og:description" content="中2理科 化学変化と原子・分子｜説明スライドとインタラクティブ分類教材 (Bilingual JP/EN)">
+<title>物質の分類｜単体・化合物・混合物</title>
+<meta property="og:title" content="物質の分類｜単体・化合物・混合物">
+<meta property="og:description" content="中2理科 化学変化と原子・分子｜説明スライドとインタラクティブ分類教材">
 <meta property="og:type" content="website">
 <style>
   :root {
@@ -57,51 +57,25 @@
     font-size: 26px;
   }
   h1 {
-    margin: 0 0 4px;
+    margin: 0 0 8px;
     font-size: 30px;
     letter-spacing: 0.06em;
   }
   h1 .acc { color: var(--orange); }
-  h1 .en {
-    display: block;
-    font-size: 14px;
-    color: #888;
-    font-style: italic;
-    font-weight: normal;
-    margin-top: 4px;
-    letter-spacing: 0.02em;
-  }
   .sub {
     font-size: 14px;
     color: #555;
     margin: 0;
   }
-  .sub .en {
-    display: block;
-    font-size: 11px;
-    color: #999;
-    font-style: italic;
-    margin-top: 2px;
-  }
   .badge {
     display: inline-block;
     background: var(--line);
     color: var(--tan);
-    padding: 6px 14px;
+    padding: 4px 14px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: bold;
     margin-bottom: 12px;
-    text-align: center;
-    line-height: 1.4;
-  }
-  .badge .en {
-    display: block;
-    font-size: 10px;
-    color: #ccc;
-    font-style: italic;
-    font-weight: normal;
-    margin-top: 1px;
   }
 
   .lead {
@@ -111,18 +85,10 @@
     padding: 14px 18px;
     margin-bottom: 22px;
     font-size: 14px;
-    line-height: 1.7;
+    line-height: 1.8;
   }
   .lead b {
     background: linear-gradient(transparent 60%, #ffe27a 60%);
-  }
-  .lead .en {
-    display: block;
-    font-size: 11px;
-    color: #888;
-    font-style: italic;
-    margin-top: 6px;
-    line-height: 1.5;
   }
 
   .cards {
@@ -164,17 +130,9 @@
   .card.c2 { background: var(--blue-bg); border-color: var(--blue); }
 
   .card h2 {
-    margin: 0 0 4px;
+    margin: 0 0 8px;
     font-size: 22px;
     padding-right: 50px;
-  }
-  .card h2 .en {
-    display: block;
-    font-size: 12px;
-    color: #888;
-    font-style: italic;
-    font-weight: normal;
-    margin-top: 2px;
   }
   .card .for {
     display: inline-block;
@@ -183,29 +141,13 @@
     border-radius: 999px;
     border: 2px solid var(--line);
     font-size: 11px;
-    margin: 6px 0 10px;
-    text-align: center;
-    line-height: 1.3;
-  }
-  .card .for .en {
-    display: block;
-    font-size: 9px;
-    color: #888;
-    font-style: italic;
+    margin-bottom: 10px;
   }
   .card p {
-    margin: 0 0 8px;
+    margin: 0 0 12px;
     font-size: 13px;
     line-height: 1.7;
     color: #444;
-  }
-  .card p .en {
-    display: block;
-    font-size: 11px;
-    color: #888;
-    font-style: italic;
-    margin-top: 3px;
-    line-height: 1.5;
   }
   .features {
     background: white;
@@ -213,16 +155,9 @@
     padding: 8px 12px;
     font-size: 12px;
     color: #555;
-    line-height: 1.6;
+    line-height: 1.7;
   }
   .features b { color: var(--line); }
-  .features .en {
-    display: block;
-    font-size: 10px;
-    color: #888;
-    font-style: italic;
-    margin-top: 3px;
-  }
 
   .open-btn {
     display: inline-flex;
@@ -236,17 +171,8 @@
     font-size: 14px;
     margin-top: 12px;
     transition: 0.15s;
-    line-height: 1.2;
-  }
-  .open-btn .en {
-    font-size: 10px;
-    color: #555;
-    font-style: italic;
-    font-weight: normal;
-    margin-left: 4px;
   }
   .card:hover .open-btn { background: var(--line); color: var(--tan); }
-  .card:hover .open-btn .en { color: #ddc4a0; }
 
   .deco {
     display: flex;
@@ -275,39 +201,41 @@
     font-size: 12px;
     color: var(--gray);
   }
-  footer .en {
-    display: block;
-    font-size: 10px;
-    color: #aaa;
-    font-style: italic;
-    margin-top: 2px;
-  }
 
+  .lang-switch {
+    position: absolute;
+    top: 14px;
+    right: 24px;
+    display: inline-block;
+    background: var(--blue);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: 0.15s;
+  }
+  .lang-switch:hover { background: #3a9bbd; transform: translateY(-1px); }
   @media (max-width: 720px) {
     .cards { grid-template-columns: 1fr; }
     h1 { font-size: 24px; }
+    .lang-switch { position: static; display: inline-block; margin-top: 8px; }
   }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="badge">中2 理科｜化学変化と原子・分子
-      <span class="en">Grade 8 Science | Chemical Change & Atoms</span>
-    </div>
-    <h1>物質の分類<span class="acc">チャレンジ</span>
-      <span class="en">Substance Classification Challenge</span>
-    </h1>
-    <p class="sub">単体・化合物・混合物 ／ 分子か分子でないか
-      <span class="en">Element · Compound · Mixture / Molecule or Non-molecule</span>
-    </p>
+    <a href="単体・化合物・混合物　分類index_en.html" class="lang-switch">🌐 日本語＋English 併記版へ ▶</a>
+    <div class="badge">中2 理科｜化学変化と原子・分子</div>
+    <h1>物質の分類<span class="acc">チャレンジ</span></h1>
+    <p class="sub">単体・化合物・混合物 ／ 分子か分子でないか</p>
   </header>
 
   <div class="lead">
-    身のまわりの物質を <b>「混合物⇔純粋な物質」</b>「単体⇔化合物」「分子⇔分子でない」 の <b>3階層</b>で分類していこう。
+    身のまわりの物質を <b>「混合物⇔純粋な物質」</b>「単体⇔化合物」「分子⇔分子でない」 の <b>3階層</b>で分類していこう。<br>
     まずは説明資料で考え方をつかんでから、インタラクティブ教材でドラッグ＆ドロップで分類してみよう。
-    <span class="en">Let's classify everyday substances at <b>3 levels</b>: Mixture ⇔ Pure Substance, Element ⇔ Compound, Molecule ⇔ Non-molecule.
-    First, grasp the idea with the explanation slide, then practice with the interactive drag-and-drop challenge.</span>
   </div>
 
   <div class="cards">
@@ -318,17 +246,15 @@
         <span style="margin: 0 6px;">／</span>
         <span class="atom h">H</span><span class="atom o">O</span><span class="atom h">H</span>
       </div>
-      <span class="for">授業の最初に<span class="en">Start of class</span></span>
-      <h2>説明資料<span class="en">Explanation Slide</span></h2>
+      <span class="for">授業の最初に</span>
+      <h2>説明資料</h2>
       <p>
         単体・化合物・混合物のちがいを、分子モデルと化学式でひと目でつかむA4横1枚のスライド。
-        <span class="en">A 1-page landscape A4 slide explaining Element, Compound, and Mixture with molecular models and chemical formulas.</span>
       </p>
       <div class="features">
         <b>収録内容：</b>3つの分類の定義／分子モデル例／化学式の読み解き／印刷OK
-        <span class="en"><b>Contents:</b> 3 definitions / Molecular model examples / Reading chemical formulas / Print-friendly</span>
       </div>
-      <span class="open-btn">説明資料をひらく ▶<span class="en">Open Slide</span></span>
+      <span class="open-btn">説明資料をひらく ▶</span>
     </a>
 
     <a href="challenge.html" class="card c2" target="_blank">
@@ -338,23 +264,20 @@
         <span style="margin: 0 6px;">／</span>
         <span class="atom cu">Cu</span><span class="atom o">O</span>
       </div>
-      <span class="for">説明のあとに<span class="en">After the slide</span></span>
-      <h2>分類チャレンジ<span class="en">Classification Challenge</span></h2>
+      <span class="for">説明のあとに</span>
+      <h2>分類チャレンジ</h2>
       <p>
         ドラッグ＆ドロップで物質カードを分類していくインタラクティブ教材。5ステップ＋発展問題。
-        <span class="en">Drag and drop substance cards into the correct boxes. 5 steps + bonus questions.</span>
       </p>
       <div class="features">
         <b>STEP：</b>①混合物⇔純物質 ②単体⇔化合物 ③分子⇔分子でない ④総合クイズ ⑤発展（24問）
-        <span class="en"><b>STEPS:</b> ①Mixture⇔Pure ②Element⇔Compound ③Molecule or not ④Quiz ⑤Bonus (24 items)</span>
       </div>
-      <span class="open-btn">教材をはじめる ▶<span class="en">Start Challenge</span></span>
+      <span class="open-btn">教材をはじめる ▶</span>
     </a>
   </div>
 
   <footer>
     中学2年 理科｜化学変化と原子・分子｜物質の成り立ち
-    <span class="en">Grade 8 Science | Chemical Change & Atoms | Composition of Substances</span>
   </footer>
 </div>
 </body>
