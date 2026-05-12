@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>物質の分類チャレンジ｜単体・化合物・混合物</title>
-<meta property="og:title" content="物質の分類チャレンジ｜単体・化合物・混合物">
-<meta property="og:description" content="中2理科 化学変化と原子・分子｜物質を3階層で分類するインタラクティブ教材">
+<title>物質の分類チャレンジ / Substance Classification Challenge</title>
+<meta property="og:title" content="物質の分類チャレンジ / Substance Classification Challenge">
+<meta property="og:description" content="中2理科 化学変化と原子・分子｜物質を3階層で分類するインタラクティブ教材 (Bilingual JP/EN)">
 <meta property="og:type" content="article">
 <style>
   :root {
@@ -444,6 +444,60 @@
     z-index: 9999;
   }
 
+  /* === 英訳併記スタイル === */
+  .en {
+    display: block;
+    font-size: 0.7em;
+    font-weight: normal;
+    color: #888;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin-top: 1px;
+    line-height: 1.3;
+  }
+  .en-inline {
+    font-size: 0.78em;
+    font-weight: normal;
+    color: #888;
+    font-style: italic;
+    letter-spacing: 0.02em;
+    margin-left: 4px;
+  }
+  header.top h1 .en, .stage-title .en {
+    font-size: 0.55em;
+    color: #999;
+  }
+  .progress .step .en { font-size: 0.85em; color: inherit; opacity: 0.65; margin-top: 0; }
+  .item .name .en {
+    font-size: 0.85em;
+    color: #999;
+    margin-top: 0;
+  }
+  .quiz .item-big .name .en {
+    font-size: 0.7em;
+    color: #999;
+  }
+  .box h3 .en {
+    font-size: 0.65em;
+    color: rgba(255,255,255,0.85);
+  }
+  .stage-sub .en {
+    color: #888;
+    font-size: 0.85em;
+  }
+  .help .en {
+    font-size: 0.92em;
+    color: #777;
+    margin-top: 2px;
+  }
+  button .en {
+    font-size: 0.78em;
+    color: inherit;
+    opacity: 0.75;
+    display: inline;
+    margin-left: 4px;
+  }
+
   @media (max-width: 720px) {
     .boxes.two   { grid-template-columns: 1fr; }
     .boxes.three { grid-template-columns: 1fr; }
@@ -454,20 +508,20 @@
 <body>
 <div class="app">
   <header class="top">
-    <h1>物質の分類チャレンジ</h1>
+    <h1>物質の分類チャレンジ<span class="en">Substance Classification Challenge</span></h1>
     <div style="display:flex; align-items:center; gap:8px;">
       <button class="mute-btn" id="muteBtn" onclick="toggleSound()" title="音のON / OFF">🔊</button>
-      <span class="badge">中2 理科｜化学変化と原子・分子</span>
+      <span class="badge">中2 理科｜化学変化と原子・分子<span class="en">Grade 8 Science | Chemical Change</span></span>
     </div>
   </header>
 
   <div class="progress" id="progress">
-    <div class="step" data-step="0">スタート</div>
-    <div class="step" data-step="1">①混合物か純物質か</div>
-    <div class="step" data-step="2">②単体か化合物か</div>
-    <div class="step" data-step="3">③分子か分子でないか</div>
-    <div class="step" data-step="4">④総合クイズ</div>
-    <div class="step" data-step="5">⑤発展問題</div>
+    <div class="step" data-step="0">スタート<span class="en">Start</span></div>
+    <div class="step" data-step="1">①混合物か純物質か<span class="en">Mixture / Pure</span></div>
+    <div class="step" data-step="2">②単体か化合物か<span class="en">Element / Compound</span></div>
+    <div class="step" data-step="3">③分子か分子でないか<span class="en">Molecule or Not</span></div>
+    <div class="step" data-step="4">④総合クイズ<span class="en">Quiz</span></div>
+    <div class="step" data-step="5">⑤発展問題<span class="en">Bonus</span></div>
   </div>
 
   <div class="card-stage" id="stage"></div>
@@ -478,36 +532,36 @@
    物質データ
    ========================================================= */
 const SUBSTANCES = {
-  O2:    { formula: 'O<sub>2</sub>',  name: '酸素',         pure: true,  type: '単体',   molecule: true  },
-  H2:    { formula: 'H<sub>2</sub>',  name: '水素',         pure: true,  type: '単体',   molecule: true  },
-  Cu:    { formula: 'Cu',             name: '銅',           pure: true,  type: '単体',   molecule: false },
-  Mg:    { formula: 'Mg',             name: 'マグネシウム', pure: true,  type: '単体',   molecule: false },
-  Fe:    { formula: 'Fe',             name: '鉄',           pure: true,  type: '単体',   molecule: false },
-  H2O:   { formula: 'H<sub>2</sub>O', name: '水',           pure: true,  type: '化合物', molecule: true  },
-  CO2:   { formula: 'CO<sub>2</sub>', name: '二酸化炭素',   pure: true,  type: '化合物', molecule: true  },
-  NaCl:  { formula: 'NaCl',           name: '塩化ナトリウム', pure: true, type: '化合物', molecule: false },
-  CuO:   { formula: 'CuO',            name: '酸化銅',       pure: true,  type: '化合物', molecule: false },
-  Saltwater: { formula: '食塩水',      name: 'NaCl + H₂O',     pure: false, type: '混合物' },
-  Air:       { formula: '空気',        name: 'N₂・O₂・…',      pure: false, type: '混合物' },
-  Tea:       { formula: 'お茶',        name: '水＋茶の成分',   pure: false, type: '混合物' },
-  Seawater:  { formula: '海水',        name: '水＋塩など',     pure: false, type: '混合物' },
+  O2:    { formula: 'O<sub>2</sub>',  name: '酸素 / Oxygen',         pure: true,  type: '単体',   molecule: true  },
+  H2:    { formula: 'H<sub>2</sub>',  name: '水素 / Hydrogen',         pure: true,  type: '単体',   molecule: true  },
+  Cu:    { formula: 'Cu',             name: '銅 / Copper',           pure: true,  type: '単体',   molecule: false },
+  Mg:    { formula: 'Mg',             name: 'マグネシウム / Magnesium', pure: true,  type: '単体',   molecule: false },
+  Fe:    { formula: 'Fe',             name: '鉄 / Iron',           pure: true,  type: '単体',   molecule: false },
+  H2O:   { formula: 'H<sub>2</sub>O', name: '水 / Water',           pure: true,  type: '化合物', molecule: true  },
+  CO2:   { formula: 'CO<sub>2</sub>', name: '二酸化炭素 / Carbon dioxide',   pure: true,  type: '化合物', molecule: true  },
+  NaCl:  { formula: 'NaCl',           name: '塩化ナトリウム / Sodium chloride', pure: true, type: '化合物', molecule: false },
+  CuO:   { formula: 'CuO',            name: '酸化銅 / Copper oxide',       pure: true,  type: '化合物', molecule: false },
+  Saltwater: { formula: '食塩水<span class="en">Saltwater</span>',      name: 'NaCl + H₂O (Salt water)',     pure: false, type: '混合物' },
+  Air:       { formula: '空気<span class="en">Air</span>',        name: 'N₂・O₂・… (Air mix)',      pure: false, type: '混合物' },
+  Tea:       { formula: 'お茶<span class="en">Tea</span>',        name: '水＋茶の成分 / Water + Tea',   pure: false, type: '混合物' },
+  Seawater:  { formula: '海水<span class="en">Seawater</span>',        name: '水＋塩など / Water + Salt',     pure: false, type: '混合物' },
 
   /* ⑤発展問題用 */
-  Ag:        { formula: 'Ag',          name: '銀',             pure: true,  type: '単体' },
-  C:         { formula: 'C',           name: '炭素',           pure: true,  type: '単体' },
-  N2:        { formula: 'N<sub>2</sub>', name: '窒素',         pure: true,  type: '単体' },
-  Zn:        { formula: 'Zn',          name: '亜鉛',           pure: true,  type: '単体' },
-  Au:        { formula: 'Au',          name: '金',             pure: true,  type: '単体' },
-  NH4_2SO4:  { formula: '(NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub>', name: '硫酸アンモニウム', pure: true, type: '化合物' },
-  C6H12O6:   { formula: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>',   name: 'でんぷん',         pure: true, type: '化合物' },
-  C2H5OH:    { formula: 'C<sub>2</sub>H<sub>5</sub>OH', name: 'エタノール',     pure: true,  type: '化合物' },
-  Ag2O:      { formula: 'Ag<sub>2</sub>O', name: '酸化銀',     pure: true,  type: '化合物' },
-  NH3:       { formula: 'NH<sub>3</sub>',  name: 'アンモニア', pure: true,  type: '化合物' },
-  CuS:       { formula: 'CuS',         name: '硫化銅',         pure: true,  type: '化合物' },
-  CH3COOH:   { formula: 'CH<sub>3</sub>COOH', name: '酢酸',    pure: true,  type: '化合物' },
-  Cola:      { formula: 'コーラ',      name: '糖・水・…',      pure: false, type: '混合物' },
-  NaClAq:    { formula: '塩化ナトリウム水溶液', name: 'NaCl + H₂O', pure: false, type: '混合物' },
-  CuCl2Aq:   { formula: '塩化銅水溶液', name: 'CuCl₂ + H₂O',   pure: false, type: '混合物' },
+  Ag:        { formula: 'Ag',          name: '銀 / Silver',             pure: true,  type: '単体' },
+  C:         { formula: 'C',           name: '炭素 / Carbon',           pure: true,  type: '単体' },
+  N2:        { formula: 'N<sub>2</sub>', name: '窒素 / Nitrogen',         pure: true,  type: '単体' },
+  Zn:        { formula: 'Zn',          name: '亜鉛 / Zinc',           pure: true,  type: '単体' },
+  Au:        { formula: 'Au',          name: '金 / Gold',             pure: true,  type: '単体' },
+  NH4_2SO4:  { formula: '(NH<sub>4</sub>)<sub>2</sub>SO<sub>4</sub>', name: '硫酸アンモニウム / Ammonium sulfate', pure: true, type: '化合物' },
+  C6H12O6:   { formula: 'C<sub>6</sub>H<sub>12</sub>O<sub>6</sub>',   name: 'でんぷん / Starch',         pure: true, type: '化合物' },
+  C2H5OH:    { formula: 'C<sub>2</sub>H<sub>5</sub>OH', name: 'エタノール / Ethanol',     pure: true,  type: '化合物' },
+  Ag2O:      { formula: 'Ag<sub>2</sub>O', name: '酸化銀 / Silver oxide',     pure: true,  type: '化合物' },
+  NH3:       { formula: 'NH<sub>3</sub>',  name: 'アンモニア / Ammonia', pure: true,  type: '化合物' },
+  CuS:       { formula: 'CuS',         name: '硫化銅 / Copper sulfide',         pure: true,  type: '化合物' },
+  CH3COOH:   { formula: 'CH<sub>3</sub>COOH', name: '酢酸 / Acetic acid',    pure: true,  type: '化合物' },
+  Cola:      { formula: 'コーラ<span class="en">Cola</span>',      name: '糖・水・… (Cola mix)',      pure: false, type: '混合物' },
+  NaClAq:    { formula: '塩化Na水溶液<span class="en">NaCl aq.</span>', name: 'NaCl + H₂O', pure: false, type: '混合物' },
+  CuCl2Aq:   { formula: '塩化Cu水溶液<span class="en">CuCl₂ aq.</span>', name: 'CuCl₂ + H₂O',   pure: false, type: '混合物' },
 };
 
 /* =========================================================
@@ -792,17 +846,17 @@ function renderStart() {
   updateProgress();
   $('#stage').innerHTML = `
     <div class="center-screen">
-      <h2>物質の分類チャレンジ</h2>
+      <h2>物質の分類チャレンジ<span class="en">Substance Classification Challenge</span></h2>
       <p>
-        身のまわりの物質を、3つの観点で分類していこう。<br>
-        ① 混合物か純粋な物質か → ② 単体か化合物か → ③ 分子か分子でないか<br>
-        最後に総合クイズで力だめし！
+        身のまわりの物質を、3つの観点で分類していこう。<span class="en">Classify everyday substances using 3 viewpoints.</span><br>
+        ① 混合物か純粋な物質か → ② 単体か化合物か → ③ 分子か分子でないか<br><span class="en">① Mixture or Pure → ② Element or Compound → ③ Molecule or Not</span><br>
+        最後に総合クイズで力だめし！<span class="en">Test yourself with the final quiz!</span>
       </p>
       <p style="font-size:13px; color:#666;">
-        遊び方：<b>カードをドラッグ</b>して、入れたい箱の上で離す<br>
-        箱の中のカードもドラッグで動かせます
+        遊び方：<b>カードをドラッグ</b>して、入れたい箱の上で離す<br><span class="en">How to play: Drag a card and release it on a box.</span><br>
+        箱の中のカードもドラッグで動かせます<span class="en">Cards in boxes can also be dragged out.</span>
       </p>
-      <button class="primary" onclick="goStep(1)">スタート 🚀</button>
+      <button class="primary" onclick="goStep(1)">スタート 🚀 <span class="en-inline">Start</span></button>
     </div>
   `;
 }
@@ -829,8 +883,8 @@ function rebuildActions(stepNum) {
   if (!actions) return;
   const checkFn = `checkStep${stepNum}()`;
   actions.innerHTML = `
-    <button class="primary" onclick="${checkFn}">答え合わせ</button>
-    <button class="ghost" onclick="resetAll()">全部やり直す</button>
+    <button class="primary" onclick="${checkFn}">答え合わせ <span class="en-inline">Check</span></button>
+    <button class="ghost" onclick="resetAll()">全部やり直す <span class="en-inline">Reset</span></button>
   `;
 }
 
@@ -858,23 +912,23 @@ function renderStep1() {
   state.step = 1;
   updateProgress();
   $('#stage').innerHTML = `
-    <h2 class="stage-title">①混合物？それとも純粋な物質？</h2>
-    <p class="stage-sub">それぞれの物質をドラッグして、当てはまる箱に入れよう</p>
+    <h2 class="stage-title">①混合物？それとも純粋な物質？<span class="en">Mixture? Or Pure Substance?</span></h2>
+    <p class="stage-sub">それぞれの物質をドラッグして、当てはまる箱に入れよう<span class="en">Drag each substance into the correct box.</span></p>
     <div class="help">
-      カードを<b>つかんで</b>箱の上で離す。箱の中のカードも<b>ドラッグで動かせる</b>よ
+      カードを<b>つかんで</b>箱の上で離す。箱の中のカードも<b>ドラッグで動かせる</b>よ<span class="en">Grab a card and release on a box. Cards in boxes can be dragged too.</span>
     </div>
     <div class="boxes two">
       <div class="box b-yellow" data-correct="pure">
-        <h3>純粋な物質（純物質）</h3>
+        <h3>純粋な物質（純物質）<span class="en">Pure Substance</span></h3>
         <div class="slots"></div>
       </div>
       <div class="box b-green" data-correct="mix">
-        <h3>混合物</h3>
+        <h3>混合物<span class="en">Mixture</span></h3>
         <div class="slots"></div>
       </div>
     </div>
     <div class="pool">
-      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼<span class="en">Substances (drag here to return)</span></div>
       <div class="slots" id="pool1"></div>
     </div>
     <div class="actions"></div>
@@ -887,7 +941,7 @@ function renderStep1() {
 
 function checkStep1() {
   if (!allPlaced('pool1')) {
-    showFb('まだ箱に入っていない物質があるよ', false);
+    showFb('まだ箱に入っていない物質があるよ / Some substances are not placed yet', false);
     playWrong();
     return;
   }
@@ -906,15 +960,15 @@ function checkStep1() {
   state.scores[1] = { correct, total };
   if (correct === total) {
     showFb(
-      `🎉 全問正解！<br>
-       <b>純粋な物質</b>＝1つの化学式で表せる物質。<br>
-       <b>混合物</b>＝2種類以上の物質が混じり合って、1つの化学式で表せないもの。`, true);
+      `🎉 全問正解！ / 🎉 All correct!<br>
+       <b>純粋な物質</b>＝1つの化学式で表せる物質。<span class="en">Pure substance = can be written as 1 chemical formula.</span><br>
+       <b>混合物</b>＝2種類以上の物質が混じり合って、1つの化学式で表せないもの。<span class="en">Mixture = 2+ substances mixed; cannot be written as 1 formula.</span>`, true);
     sparkle(window.innerWidth/2, 200);
-    showNextBtn(() => goStep(2), '② 単体か化合物か へ進む');
+    showNextBtn(() => goStep(2), '② 単体か化合物か へ進む / Go to ② Element vs Compound');
   } else {
     showFb(
       `${correct} / ${total} 問正解。<br>
-       <b style="color:var(--red);">赤いカード</b>はまちがい。「まちがいだけ戻す」で入れ直そう！`, false);
+       <b style="color:var(--red);">赤いカード</b>はまちがい。「まちがいだけ戻す」で入れ直そう！<span class="en">Red cards are wrong. Click "Return wrong" to try again.</span>`, false);
     showRetryBtns('pool1');
   }
 }
@@ -926,23 +980,23 @@ function renderStep2() {
   state.step = 2;
   updateProgress();
   $('#stage').innerHTML = `
-    <h2 class="stage-title">②単体？それとも化合物？</h2>
-    <p class="stage-sub">純粋な物質を、化学式に出てくる元素の種類で分けよう</p>
+    <h2 class="stage-title">②単体？それとも化合物？<span class="en">Element? Or Compound?</span></h2>
+    <p class="stage-sub">純粋な物質を、化学式に出てくる元素の種類で分けよう<span class="en">Sort pure substances by the number of element types.</span></p>
     <div class="help">
-      <b>元素記号が1種類</b>だけなら単体、<b>2種類以上</b>なら化合物。化学式をよく見て！
+      <b>元素記号が1種類</b>だけなら単体、<b>2種類以上</b>なら化合物。化学式をよく見て！<span class="en">1 element symbol = Element. 2 or more = Compound.</span>
     </div>
     <div class="boxes two">
       <div class="box b-orange" data-correct="単体">
-        <h3>単体（1種類の元素）</h3>
+        <h3>単体（1種類の元素）<span class="en">Element (1 kind)</span></h3>
         <div class="slots"></div>
       </div>
       <div class="box b-blue" data-correct="化合物">
-        <h3>化合物（2種類以上の元素）</h3>
+        <h3>化合物（2種類以上の元素）<span class="en">Compound (2+ kinds)</span></h3>
         <div class="slots"></div>
       </div>
     </div>
     <div class="pool">
-      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼<span class="en">Substances (drag here to return)</span></div>
       <div class="slots" id="pool2"></div>
     </div>
     <div class="actions"></div>
@@ -975,14 +1029,14 @@ function checkStep2() {
   if (correct === total) {
     showFb(
       `🎉 全問正解！<br>
-       元素記号が<b>1種類だけ</b>出てくる → 単体（O<sub>2</sub>, H<sub>2</sub>, Cu, Mg）<br>
-       元素記号が<b>2種類以上</b>出てくる → 化合物（H<sub>2</sub>O, CO<sub>2</sub>, NaCl, CuO）`, true);
+       元素記号が<b>1種類だけ</b>出てくる → 単体（O<sub>2</sub>, H<sub>2</sub>, Cu, Mg）<span class="en">Only 1 element symbol → Element</span><br>
+       元素記号が<b>2種類以上</b>出てくる → 化合物（H<sub>2</sub>O, CO<sub>2</sub>, NaCl, CuO）<span class="en">2+ element symbols → Compound</span>`, true);
     sparkle(window.innerWidth/2, 200);
-    showNextBtn(() => goStep(3), '③ 分子か分子でないか へ進む');
+    showNextBtn(() => goStep(3), '③ 分子か分子でないか へ進む / Go to ③ Molecule or Not');
   } else {
     showFb(
       `${correct} / ${total} 問正解。<br>
-       元素記号の<b>種類数</b>を数えてみよう（O<sub>2</sub>はOが1種類、H<sub>2</sub>OはHとOで2種類）。`, false);
+       元素記号の<b>種類数</b>を数えてみよう（O<sub>2</sub>はOが1種類、H<sub>2</sub>OはHとOで2種類）。<span class="en">Count the distinct element symbols.</span>`, false);
     showRetryBtns('pool2');
   }
 }
@@ -994,23 +1048,23 @@ function renderStep3() {
   state.step = 3;
   updateProgress();
   $('#stage').innerHTML = `
-    <h2 class="stage-title">③分子？それとも分子でない？</h2>
-    <p class="stage-sub">単体・化合物の中でも、分子のものと分子でないものがある</p>
+    <h2 class="stage-title">③分子？それとも分子でない？<span class="en">Molecule? Or Not?</span></h2>
+    <p class="stage-sub">単体・化合物の中でも、分子のものと分子でないものがある<span class="en">Even within elements & compounds, some are molecules, some are not.</span></p>
     <div class="help">
-      <b>金属</b>（Cu・Mg・Feなど）と、<b>NaCl・CuO</b>は分子ではない（原子が切れ目なく並んでいる）
+      <b>金属</b>（Cu・Mg・Feなど）と、<b>NaCl・CuO</b>は分子ではない（原子が切れ目なく並んでいる）<span class="en">Metals (Cu, Mg, Fe) and NaCl, CuO are NOT molecules.</span>
     </div>
     <div class="boxes two">
       <div class="box b-yellow" data-correct="mol">
-        <h3>分子である</h3>
+        <h3>分子である<span class="en">Is a molecule</span></h3>
         <div class="slots"></div>
       </div>
       <div class="box b-gray" data-correct="nomol">
-        <h3>分子ではない</h3>
+        <h3>分子ではない<span class="en">Not a molecule</span></h3>
         <div class="slots"></div>
       </div>
     </div>
     <div class="pool">
-      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="pool-label">▼ 物質たち（戻したいときもここへドラッグ） ▼<span class="en">Substances (drag here to return)</span></div>
       <div class="slots" id="pool3"></div>
     </div>
     <div class="actions"></div>
@@ -1045,14 +1099,14 @@ function checkStep3() {
       `🎉 全問正解！<br>
        単体でも化合物でも、分子のもの（O<sub>2</sub>, H<sub>2</sub>, H<sub>2</sub>O, CO<sub>2</sub>）と
        分子でないもの（金属の Cu・Mg・Fe、化合物の NaCl・CuO）がある。<br>
-       <b>分子か分子でないかは、化学式からは判断できない</b>ことに注意！`, true);
+       <b>分子か分子でないかは、化学式からは判断できない</b>ことに注意！<span class="en">⚠️ Molecule/Non-molecule cannot be told from the formula alone.</span>`, true);
     showQuad();
     sparkle(window.innerWidth/2, 200);
-    showNextBtn(() => goStep(4), '④ 総合クイズ へ進む');
+    showNextBtn(() => goStep(4), '④ 総合クイズ へ進む / Go to ④ Quiz');
   } else {
     showFb(
       `${correct} / ${total} 問正解。<br>
-       金属（Cu・Mg・Fe）と、NaCl・CuO は<b>分子ではない</b>よ。`, false);
+       金属（Cu・Mg・Fe）と、NaCl・CuO は<b>分子ではない</b>よ。<span class="en">Metals (Cu, Mg, Fe) and NaCl, CuO are NOT molecules.</span>`, false);
     showRetryBtns('pool3');
   }
 }
@@ -1098,23 +1152,23 @@ function renderQuizQ() {
   const key = q.items[q.idx];
   const s = SUBSTANCES[key];
   $('#stage').innerHTML = `
-    <h2 class="stage-title">④総合クイズ</h2>
+    <h2 class="stage-title">④総合クイズ<span class="en">Comprehensive Quiz</span></h2>
     <div class="quiz">
       <div class="qnum">第 ${q.idx + 1} 問 / ${q.items.length} 問　・　正解 ${q.correct} 問</div>
       <div class="item-big">
         <div class="formula">${s.formula}</div>
         <div class="name">${s.name}</div>
       </div>
-      <p style="margin-top:8px; font-size:14px;">この物質はどれ？</p>
+      <p style="margin-top:8px; font-size:14px;">この物質はどれ？<span class="en">Which type is this substance?</span></p>
       <div class="choices">
-        <button class="choice c1" data-ans="単体">単体</button>
-        <button class="choice c2" data-ans="化合物">化合物</button>
-        <button class="choice c3" data-ans="混合物">混合物</button>
+        <button class="choice c1" data-ans="単体">単体<span class="en">Element</span></button>
+        <button class="choice c2" data-ans="化合物">化合物<span class="en">Compound</span></button>
+        <button class="choice c3" data-ans="混合物">混合物<span class="en">Mixture</span></button>
       </div>
     </div>
     <div class="feedback"></div>
     <div class="actions" id="qActions" style="display:none;">
-      <button class="success" onclick="nextQuiz()">次の問題へ ▶</button>
+      <button class="success" onclick="nextQuiz()">次の問題へ ▶ <span class="en-inline">Next ▶</span></button>
     </div>
   `;
   $$('.choice').forEach(b => {
@@ -1153,9 +1207,9 @@ function nextQuiz() {
 }
 
 function explain(s) {
-  if (s.type === '混合物') return '2種類以上の物質が混じり合っている → 混合物。化学式で表せない。';
-  if (s.type === '単体') return '元素記号が1種類しか出てこない → 単体。';
-  return '元素記号が2種類以上出てくる → 化合物。';
+  if (s.type === '混合物') return '2種類以上の物質が混じり合っている → 混合物。化学式で表せない。 / Mixed → Mixture; no single formula.';
+  if (s.type === '単体') return '元素記号が1種類しか出てこない → 単体。 / Only 1 element symbol → Element.';
+  return '元素記号が2種類以上出てくる → 化合物。 / 2+ element symbols → Compound.';
 }
 
 /* =========================================================
@@ -1165,19 +1219,19 @@ function renderStep5() {
   state.step = 5;
   updateProgress();
   $('#stage').innerHTML = `
-    <h2 class="stage-title">⑤発展問題：これまでの全部を分類しよう</h2>
-    <p class="stage-sub">24種類の物質を、単体・化合物・混合物のどれかに振り分けよう</p>
+    <h2 class="stage-title">⑤発展問題：これまでの全部を分類しよう<span class="en">Bonus: Classify all you have learned</span></h2>
+    <p class="stage-sub">24種類の物質を、単体・化合物・混合物のどれかに振り分けよう<span class="en">Sort 24 substances into Element / Compound / Mixture.</span></p>
     <div class="help">
-      ヒント：化学式で表せないもの（「水溶液」「コーラ」「空気」など）が<b>混合物</b>。
-      化学式は<b>元素の種類数</b>で単体／化合物を見分けよう
+      ヒント：化学式で表せないもの（「水溶液」「コーラ」「空気」など）が<b>混合物</b>。<span class="en">Hint: Things without a formula ("solution", "cola", "air") are mixtures.</span>
+      化学式は<b>元素の種類数</b>で単体／化合物を見分けよう<span class="en">Tell Element/Compound by the number of element types.</span>
     </div>
     <div class="boxes three">
       <div class="box b-orange" data-correct="単体">
-        <h3>単体</h3>
+        <h3>単体<span class="en">Element</span></h3>
         <div class="slots"></div>
       </div>
       <div class="box b-blue" data-correct="化合物">
-        <h3>化合物</h3>
+        <h3>化合物<span class="en">Compound</span></h3>
         <div class="slots"></div>
       </div>
       <div class="box b-green" data-correct="混合物">
@@ -1186,7 +1240,7 @@ function renderStep5() {
       </div>
     </div>
     <div class="pool">
-      <div class="pool-label">▼ 24種類の物質たち（戻したいときもここへドラッグ） ▼</div>
+      <div class="pool-label">▼ 24種類の物質たち（戻したいときもここへドラッグ） ▼<span class="en">24 substances (drag here to return)</span></div>
       <div class="slots" id="pool5"></div>
     </div>
     <div class="actions"></div>
@@ -1218,9 +1272,9 @@ function checkStep5() {
   state.scores[5] = { correct, total };
   if (correct === total) {
     showFb(
-      `🏆 パーフェクト！分類マスター認定！<br>
-       3階層の分類がしっかり身についているね。
-       「水溶液」「コーラ」「空気」など、化学式で書かれていないものが混合物だったよ。`, true);
+      `🏆 パーフェクト！分類マスター認定！ / 🏆 Perfect! Classification Master!<br>
+       3階層の分類がしっかり身についているね。<span class="en">You've mastered the 3-level classification.</span>
+       「水溶液」「コーラ」「空気」など、化学式で書かれていないものが混合物だったよ。<span class="en">"Solution", "cola", "air" without a formula → mixtures.</span>`, true);
     sparkle(window.innerWidth/2, 200);
     setTimeout(() => sparkle(window.innerWidth/2, 250), 300);
     setTimeout(() => sparkle(window.innerWidth/2, 200), 600);
@@ -1228,8 +1282,8 @@ function checkStep5() {
   } else {
     showFb(
       `${correct} / ${total} 問正解。<br>
-       <b style="color:var(--red);">赤いカード</b>を見直そう。
-       「〜水溶液」「コーラ」「空気」のように化学式で表せないものは<b>混合物</b>だよ。`, false);
+       <b style="color:var(--red);">赤いカード</b>を見直そう。<span class="en">Check the red cards.</span>
+       「〜水溶液」「コーラ」「空気」のように化学式で表せないものは<b>混合物</b>だよ。<span class="en">Things without a chemical formula like "solution", "cola", "air" are mixtures.</span>`, false);
     showRetryBtns('pool5');
   }
 }
@@ -1238,8 +1292,8 @@ function showFinalBtns() {
   playCorrect();
   const actions = $('#stage .actions');
   actions.innerHTML = `
-    <button class="success" onclick="goStep(0)">最初から</button>
-    <button class="ghost" onclick="goStep(4)">クイズに戻る</button>
+    <button class="success" onclick="goStep(0)">最初から <span class="en-inline">Restart</span></button>
+    <button class="ghost" onclick="goStep(4)">クイズに戻る <span class="en-inline">Back to Quiz</span></button>
   `;
 }
 
@@ -1253,13 +1307,13 @@ function renderResult() {
   const total = q.items.length;
   const pct = Math.round(q.correct / total * 100);
   let comment = '';
-  if (pct === 100) comment = 'パーフェクト！分類マスターだね 🏆';
-  else if (pct >= 80) comment = 'すばらしい！ほぼ完ぺき 👏';
-  else if (pct >= 60) comment = 'いい感じ！もう一歩でマスター 💪';
-  else comment = '教科書を見ながらもう一度やってみよう 📖';
+  if (pct === 100) comment = 'パーフェクト！分類マスターだね 🏆 / Perfect! Classification Master 🏆';
+  else if (pct >= 80) comment = 'すばらしい！ほぼ完ぺき 👏 / Excellent! Almost perfect 👏';
+  else if (pct >= 60) comment = 'いい感じ！もう一歩でマスター 💪 / Nice! Almost there 💪';
+  else comment = '教科書を見ながらもう一度やってみよう 📖 / Try again with your textbook 📖';
   $('#stage').innerHTML = `
     <div class="center-screen">
-      <h2>けっか発表！</h2>
+      <h2>けっか発表！<span class="en">Results!</span></h2>
       <div class="score-display">${q.correct}<small> / ${total}</small></div>
       <p>${comment}</p>
       <div style="margin-top:12px; font-size:13px; color:#666;">
@@ -1268,10 +1322,10 @@ function renderResult() {
         STEP3: ${state.scores[3] ? state.scores[3].correct + '/' + state.scores[3].total : '-'}
       </div>
       <div style="margin-top:18px;">
-        <button class="success" onclick="goStep(5)">⑤ 発展問題に挑戦 ▶</button>
+        <button class="success" onclick="goStep(5)">⑤ 発展問題に挑戦 ▶ <span class="en-inline">Try Bonus</span></button>
       </div>
       <div style="margin-top:10px;">
-        <button class="primary" onclick="goStep(4)">クイズだけもう一回</button>
+        <button class="primary" onclick="goStep(4)">クイズだけもう一回 <span class="en-inline">Retry Quiz</span></button>
         <button class="ghost" onclick="goStep(0)">最初から</button>
       </div>
     </div>
@@ -1299,7 +1353,7 @@ function showNextBtn(callback, label) {
   const actions = $('#stage .actions');
   actions.innerHTML = `
     <button class="success" id="nextBtn">${label} ▶</button>
-    <button class="ghost" onclick="resetAll()">最初からやり直す</button>
+    <button class="ghost" onclick="resetAll()">最初からやり直す <span class="en-inline">Restart</span></button>
   `;
   $('#nextBtn').onclick = callback;
 }
@@ -1309,8 +1363,8 @@ function showRetryBtns(poolId) {
   const actions = $('#stage .actions');
   const checkFn = `checkStep${state.step}()`;
   actions.innerHTML = `
-    <button class="primary" onclick="returnWrong('${poolId}')">まちがいだけ戻す</button>
-    <button class="primary" onclick="${checkFn}">もう一度 答え合わせ</button>
+    <button class="primary" onclick="returnWrong('${poolId}')">まちがいだけ戻す <span class="en-inline">Return wrong</span></button>
+    <button class="primary" onclick="${checkFn}">もう一度 答え合わせ <span class="en-inline">Check again</span></button>
     <button class="ghost" onclick="resetAll()">全部やり直す</button>
   `;
 }

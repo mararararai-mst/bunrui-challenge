@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>物質の分類｜単体・化合物・混合物 説明資料</title>
-<meta property="og:title" content="物質の分類｜単体・化合物・混合物">
-<meta property="og:description" content="中学2年理科 化学変化と原子・分子｜単体・化合物・混合物の説明スライド">
+<title>物質の分類｜単体・化合物・混合物 説明資料 | Classification of Substances</title>
+<meta property="og:title" content="物質の分類｜単体・化合物・混合物 / Classification of Substances">
+<meta property="og:description" content="中学2年理科 化学変化と原子・分子｜単体・化合物・混合物の説明スライド (Bilingual JP/EN)">
 <meta property="og:type" content="article">
 <style>
   :root {
@@ -47,25 +47,44 @@
     margin-bottom: 14px;
   }
   h1 {
-    font-size: 30px;
+    font-size: 26px;
     margin: 0;
     letter-spacing: 0.05em;
   }
   h1 .acc {
     color: var(--orange);
-    font-size: 22px;
+    font-size: 18px;
     margin-left: 8px;
+  }
+  h1 .en {
+    display: block;
+    font-size: 12px;
+    color: #888;
+    font-style: italic;
+    font-weight: normal;
+    margin-top: 2px;
+    letter-spacing: 0.02em;
   }
   .badge {
     background: var(--line);
     color: var(--tan);
     padding: 6px 14px;
     border-radius: 999px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+  }
+  .badge .en {
+    display: block;
+    font-size: 10px;
+    color: #ccc;
+    font-style: italic;
+    font-weight: normal;
+    margin-top: 1px;
   }
   .lead {
-    font-size: 15px;
+    font-size: 14px;
     background: white;
     padding: 10px 16px;
     border-radius: 12px;
@@ -77,6 +96,23 @@
     background: linear-gradient(transparent 60%, #ffe27a 60%);
     font-weight: bold;
   }
+  .lead .en {
+    display: block;
+    font-size: 11px;
+    color: #888;
+    font-style: italic;
+    margin-top: 4px;
+    line-height: 1.5;
+  }
+
+  /* 英訳併記の共通スタイル */
+  .en {
+    font-weight: normal;
+    color: #888;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
   .cards {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -96,11 +132,20 @@
 
   .card h2 {
     margin: 0 0 6px;
-    font-size: 22px;
+    font-size: 20px;
     text-align: center;
-    padding: 4px 0;
+    padding: 5px 0;
     border-radius: 8px;
     color: white;
+    line-height: 1.2;
+  }
+  .card h2 .en {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+    margin-top: 1px;
+    font-weight: normal;
   }
   .tan-orange h2 { background: var(--orange); }
   .tan-blue h2   { background: var(--blue); }
@@ -109,13 +154,21 @@
   .def {
     background: white;
     border-radius: 10px;
-    padding: 8px 10px;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 10px;
+    padding: 7px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 8px;
     border: 1.5px dashed var(--line);
   }
   .def b { background: linear-gradient(transparent 60%, #ffe27a 60%); }
+  .def .en {
+    display: block;
+    font-size: 10px;
+    color: #888;
+    font-style: italic;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
 
   .examples {
     display: grid;
@@ -131,12 +184,19 @@
   }
   .ex svg { display: block; margin: 0 auto; }
   .ex .name {
-    font-size: 12px;
+    font-size: 11px;
     margin-top: 2px;
     color: #555;
+    line-height: 1.2;
+  }
+  .ex .name .en {
+    display: block;
+    font-size: 9px;
+    color: #999;
+    font-style: italic;
   }
   .ex .formula {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     margin-top: 1px;
     letter-spacing: 0.02em;
@@ -146,18 +206,25 @@
   .full-row { grid-column: 1 / -1; }
 
   .point {
-    margin-top: 8px;
+    margin-top: 6px;
     background: var(--line);
     color: var(--tan);
     border-radius: 10px;
     padding: 6px 10px;
-    font-size: 12px;
-    line-height: 1.55;
+    font-size: 11px;
+    line-height: 1.5;
   }
   .point::before {
     content: "★ ";
     color: #ffd45c;
-    font-size: 14px;
+    font-size: 13px;
+  }
+  .point .en {
+    display: block;
+    font-size: 9.5px;
+    color: #ddc4a0;
+    font-style: italic;
+    margin-top: 2px;
   }
 
   .summary {
@@ -165,34 +232,53 @@
     background: white;
     border: 3px solid var(--line);
     border-radius: 14px;
-    padding: 10px 14px;
+    padding: 8px 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 10px;
     font-size: 14px;
     flex-wrap: wrap;
+    line-height: 1.3;
   }
   .summary .chip {
     padding: 4px 12px;
     border-radius: 999px;
     color: white;
     font-weight: bold;
-    font-size: 13px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 1.2;
+  }
+  .summary .chip .en {
+    display: block;
+    font-size: 9px;
+    color: rgba(255,255,255,0.85);
+    font-style: italic;
+    font-weight: normal;
   }
   .chip.o { background: var(--orange); }
   .chip.b { background: var(--blue); }
   .chip.g { background: var(--green); }
-  .summary .eq { font-size: 22px; font-weight: bold; }
+  .summary .eq { font-size: 20px; font-weight: bold; }
   .summary .pure {
     border: 2px dashed var(--line);
     padding: 4px 12px;
     border-radius: 999px;
     background: #fff8d0;
     font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    font-size: 12px;
+  }
+  .summary .pure .en {
+    display: block;
+    font-size: 9px;
+    color: #888;
+    font-style: italic;
+    font-weight: normal;
   }
 
-  /* 化学式の下付き */
   .f sub { font-size: 0.7em; vertical-align: -0.15em; }
 
   footer {
@@ -200,6 +286,12 @@
     text-align: right;
     font-size: 11px;
     color: var(--gray);
+  }
+  footer .en {
+    display: block;
+    font-size: 9px;
+    color: #aaa;
+    font-style: italic;
   }
 
   @media print {
@@ -218,43 +310,50 @@
 <body>
 <div class="page">
   <header>
-    <h1>物質の分類<span class="acc">〜単体・化合物・混合物〜</span></h1>
-    <span class="badge">中2 理科｜化学変化と原子・分子</span>
+    <h1>物質の分類<span class="acc">〜単体・化合物・混合物〜</span>
+      <span class="en">Classification of Substances — Element, Compound, Mixture</span>
+    </h1>
+    <span class="badge">中2 理科｜化学変化と原子・分子
+      <span class="en">Grade 8 Science | Chemical Change & Atoms</span>
+    </span>
   </header>
 
   <div class="lead">
-    身のまわりの物質は、<span class="marker">化学式で表せるか</span>、<span class="marker">何種類の元素からできているか</span>で分類できる。<br>
+    身のまわりの物質は、<span class="marker">化学式で表せるか</span>、<span class="marker">何種類の元素からできているか</span>で分類できる。
     分子モデルと化学式に注目して、それぞれのちがいを見つけよう。
+    <span class="en">Substances around us can be classified by <b>whether they can be written as a chemical formula</b> and <b>how many kinds of elements</b> they contain. Look at the molecular models and chemical formulas to find the differences.</span>
   </div>
 
   <div class="cards">
-    <!-- ============ 単体 ============ -->
+    <!-- ============ 単体 / Element ============ -->
     <div class="card tan-orange">
-      <h2>単体</h2>
-      <div class="def"><b>1種類の元素</b>からできている物質。化学式は元素記号1つ分で表せる。</div>
+      <h2>単体<span class="en">Element (single-element substance)</span></h2>
+      <div class="def"><b>1種類の元素</b>からできている物質。化学式は元素記号1つ分で表せる。
+        <span class="en">A substance made of <b>one kind of element</b>. Can be written with a single element symbol.</span>
+      </div>
       <div class="examples">
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="28" cy="22" r="14" fill="#ff7a7a" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="28" y="27" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">O</text>
             <circle cx="56" cy="22" r="14" fill="#ff7a7a" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="56" y="27" text-anchor="middle" font-size="13" font-weight="bold" fill="#fff">O</text>
           </svg>
           <div class="formula f">O<sub>2</sub></div>
-          <div class="name">酸素</div>
+          <div class="name">酸素<span class="en">Oxygen</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="32" cy="22" r="11" fill="#bfe6f4" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="32" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3a2a">H</text>
             <circle cx="52" cy="22" r="11" fill="#bfe6f4" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="52" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="#4a3a2a">H</text>
           </svg>
           <div class="formula f">H<sub>2</sub></div>
-          <div class="name">水素</div>
+          <div class="name">水素<span class="en">Hydrogen</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="22" cy="16" r="9" fill="#d4a574" stroke="#4a3a2a" stroke-width="1.2"/>
             <circle cx="40" cy="16" r="9" fill="#d4a574" stroke="#4a3a2a" stroke-width="1.2"/>
             <circle cx="58" cy="16" r="9" fill="#d4a574" stroke="#4a3a2a" stroke-width="1.2"/>
@@ -263,10 +362,10 @@
             <text x="40" y="20" text-anchor="middle" font-size="9" font-weight="bold" fill="#4a3a2a">Cu</text>
           </svg>
           <div class="formula f">Cu</div>
-          <div class="name">銅</div>
+          <div class="name">銅<span class="en">Copper</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="22" cy="16" r="9" fill="#a8d5a0" stroke="#4a3a2a" stroke-width="1.2"/>
             <circle cx="40" cy="16" r="9" fill="#a8d5a0" stroke="#4a3a2a" stroke-width="1.2"/>
             <circle cx="58" cy="16" r="9" fill="#a8d5a0" stroke="#4a3a2a" stroke-width="1.2"/>
@@ -275,19 +374,23 @@
             <text x="40" y="20" text-anchor="middle" font-size="9" font-weight="bold" fill="#4a3a2a">Mg</text>
           </svg>
           <div class="formula f">Mg</div>
-          <div class="name">マグネシウム</div>
+          <div class="name">マグネシウム<span class="en">Magnesium</span></div>
         </div>
       </div>
-      <div class="point">分子のもの（O<sub>2</sub>・H<sub>2</sub>）と、原子がたくさん並んでいる金属（Cu・Mg・Fe）がある</div>
+      <div class="point">分子のもの（O<sub>2</sub>・H<sub>2</sub>）と、原子が並んでいる金属（Cu・Mg・Fe）がある
+        <span class="en">Some form molecules (O₂, H₂); others are metals with atoms packed together (Cu, Mg, Fe).</span>
+      </div>
     </div>
 
-    <!-- ============ 化合物 ============ -->
+    <!-- ============ 化合物 / Compound ============ -->
     <div class="card tan-blue">
-      <h2>化合物</h2>
-      <div class="def"><b>2種類以上の元素</b>からできている物質。化学式に元素記号が複数出てくる。</div>
+      <h2>化合物<span class="en">Compound</span></h2>
+      <div class="def"><b>2種類以上の元素</b>からできている物質。化学式に元素記号が複数出てくる。
+        <span class="en">A substance made of <b>two or more kinds of elements</b>. The chemical formula contains multiple element symbols.</span>
+      </div>
       <div class="examples">
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="40" cy="22" r="13" fill="#ff7a7a" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="40" y="27" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">O</text>
             <circle cx="22" cy="14" r="9" fill="#bfe6f4" stroke="#4a3a2a" stroke-width="1.5"/>
@@ -296,10 +399,10 @@
             <text x="58" y="18" text-anchor="middle" font-size="9" font-weight="bold" fill="#4a3a2a">H</text>
           </svg>
           <div class="formula f">H<sub>2</sub>O</div>
-          <div class="name">水</div>
+          <div class="name">水<span class="en">Water</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="40" cy="22" r="11" fill="#3a3a3a" stroke="#4a3a2a" stroke-width="1.5"/>
             <text x="40" y="26" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">C</text>
             <circle cx="20" cy="22" r="11" fill="#ff7a7a" stroke="#4a3a2a" stroke-width="1.5"/>
@@ -308,10 +411,10 @@
             <text x="60" y="26" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">O</text>
           </svg>
           <div class="formula f">CO<sub>2</sub></div>
-          <div class="name">二酸化炭素</div>
+          <div class="name">二酸化炭素<span class="en">Carbon dioxide</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="22" cy="14" r="9" fill="#c9a4dd" stroke="#4a3a2a" stroke-width="1.2"/>
             <text x="22" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#4a3a2a">Na</text>
             <circle cx="40" cy="14" r="9" fill="#9bd28d" stroke="#4a3a2a" stroke-width="1.2"/>
@@ -324,10 +427,10 @@
             <text x="49" y="36" text-anchor="middle" font-size="8" font-weight="bold" fill="#4a3a2a">Na</text>
           </svg>
           <div class="formula f">NaCl</div>
-          <div class="name">塩化ナトリウム</div>
+          <div class="name">塩化ナトリウム<span class="en">Sodium chloride</span></div>
         </div>
         <div class="ex">
-          <svg width="80" height="44" viewBox="0 0 80 44">
+          <svg width="78" height="40" viewBox="0 0 80 44">
             <circle cx="22" cy="14" r="9" fill="#d4a574" stroke="#4a3a2a" stroke-width="1.2"/>
             <text x="22" y="18" text-anchor="middle" font-size="8" font-weight="bold" fill="#4a3a2a">Cu</text>
             <circle cx="40" cy="14" r="9" fill="#ff7a7a" stroke="#4a3a2a" stroke-width="1.2"/>
@@ -340,46 +443,43 @@
             <text x="49" y="36" text-anchor="middle" font-size="8" font-weight="bold" fill="#4a3a2a">Cu</text>
           </svg>
           <div class="formula f">CuO</div>
-          <div class="name">酸化銅</div>
+          <div class="name">酸化銅<span class="en">Copper oxide</span></div>
         </div>
       </div>
-      <div class="point">分子のもの（H<sub>2</sub>O・CO<sub>2</sub>）と、2種類の原子が交互に並ぶもの（NaCl・CuO）がある</div>
+      <div class="point">分子のもの（H<sub>2</sub>O・CO<sub>2</sub>）と、2種類の原子が交互に並ぶもの（NaCl・CuO）がある
+        <span class="en">Some form molecules (H₂O, CO₂); others have two atom types in repeating patterns (NaCl, CuO).</span>
+      </div>
     </div>
 
-    <!-- ============ 混合物 ============ -->
+    <!-- ============ 混合物 / Mixture ============ -->
     <div class="card tan-green">
-      <h2>混合物</h2>
-      <div class="def"><b>2種類以上の物質</b>が混じり合っているもの。<b>1つの化学式では表せない</b>。</div>
+      <h2>混合物<span class="en">Mixture</span></h2>
+      <div class="def"><b>2種類以上の物質</b>が混じり合っているもの。<b>1つの化学式では表せない</b>。
+        <span class="en">A mix of <b>two or more substances</b>. <b>Cannot be written as a single chemical formula</b>.</span>
+      </div>
       <div class="examples">
         <div class="ex full-row">
-          <svg width="240" height="80" viewBox="0 0 240 80">
-            <!-- ビーカー -->
+          <svg width="240" height="70" viewBox="0 0 240 80">
             <path d="M 30 18 L 30 70 Q 30 76 36 76 L 204 76 Q 210 76 210 70 L 210 18"
                   fill="#eaf6fb" stroke="#4a3a2a" stroke-width="2"/>
             <line x1="28" y1="18" x2="212" y2="18" stroke="#4a3a2a" stroke-width="2"/>
-            <!-- 水分子をたくさん -->
             <g opacity="0.9">
               <circle cx="55" cy="40" r="5" fill="#ff7a7a"/>
               <circle cx="50" cy="34" r="3" fill="#bfe6f4"/>
               <circle cx="60" cy="34" r="3" fill="#bfe6f4"/>
-
               <circle cx="90" cy="55" r="5" fill="#ff7a7a"/>
               <circle cx="85" cy="49" r="3" fill="#bfe6f4"/>
               <circle cx="95" cy="49" r="3" fill="#bfe6f4"/>
-
               <circle cx="155" cy="42" r="5" fill="#ff7a7a"/>
               <circle cx="150" cy="36" r="3" fill="#bfe6f4"/>
               <circle cx="160" cy="36" r="3" fill="#bfe6f4"/>
-
               <circle cx="185" cy="58" r="5" fill="#ff7a7a"/>
               <circle cx="180" cy="52" r="3" fill="#bfe6f4"/>
               <circle cx="190" cy="52" r="3" fill="#bfe6f4"/>
-
               <circle cx="118" cy="62" r="5" fill="#ff7a7a"/>
               <circle cx="113" cy="56" r="3" fill="#bfe6f4"/>
               <circle cx="123" cy="56" r="3" fill="#bfe6f4"/>
             </g>
-            <!-- NaとClをばらまく -->
             <g>
               <circle cx="75" cy="60" r="6" fill="#c9a4dd" stroke="#4a3a2a" stroke-width="1"/>
               <text x="75" y="63" text-anchor="middle" font-size="6" font-weight="bold">Na</text>
@@ -391,25 +491,29 @@
               <text x="105" y="45" text-anchor="middle" font-size="6" font-weight="bold">Cl</text>
             </g>
           </svg>
-          <div class="formula f" style="font-size:15px;">NaCl と H<sub>2</sub>O が混じり合った物</div>
-          <div class="name">食塩水</div>
+          <div class="formula f" style="font-size:14px;">NaCl と H<sub>2</sub>O が混じり合った物</div>
+          <div class="name">食塩水<span class="en">Saltwater (NaCl mixed with H₂O)</span></div>
         </div>
       </div>
-      <div class="point">「食塩水」の決まった化学式は<b style="color:#ffd45c;">ない</b>（混ぜる量で割合が変わるから）</div>
+      <div class="point">「食塩水」の決まった化学式は<b style="color:#ffd45c;">ない</b>（混ぜる量で割合が変わるから）
+        <span class="en">"Saltwater" has <b style="color:#ffd45c;">no fixed</b> chemical formula (the ratio depends on how much you mix).</span>
+      </div>
     </div>
   </div>
 
   <div class="summary">
-    <span class="chip o">単体</span>
+    <span class="chip o">単体<span class="en">Element</span></span>
     <span>＋</span>
-    <span class="chip b">化合物</span>
+    <span class="chip b">化合物<span class="en">Compound</span></span>
     <span class="eq">＝</span>
-    <span class="pure">純粋な物質（純物質）</span>
+    <span class="pure">純粋な物質（純物質）<span class="en">Pure substance</span></span>
     <span style="font-size:18px;">⇔</span>
-    <span class="chip g">混合物</span>
+    <span class="chip g">混合物<span class="en">Mixture</span></span>
   </div>
 
-  <footer>中学2年 理科｜化学変化と原子・分子｜物質の成り立ち</footer>
+  <footer>中学2年 理科｜化学変化と原子・分子｜物質の成り立ち
+    <span class="en">Grade 8 Science | Chemical Change & Atoms | Composition of Substances</span>
+  </footer>
 </div>
 </body>
 </html>
